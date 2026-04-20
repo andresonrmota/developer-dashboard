@@ -176,7 +176,7 @@ export function EditModal({ project, onSave, onClose }: EditModalProps) {
         {/* Header */}
         <div className="sticky top-0 z-10 flex items-center justify-between px-8 py-5 border-b border-slate-800/80 bg-[#0f172a]/95 backdrop-blur-sm rounded-t-2xl">
           <div className="min-w-0">
-            <h2 className="text-lg font-bold text-slate-100 truncate">{project.name}</h2>
+            <h2 className="text-lg font-bold text-slate-100">{project.name}</h2>
             <p className="text-xs text-slate-500 mt-1 flex items-center gap-1.5 uppercase tracking-wide font-mono">
               <LayoutPanelTop size={12} className="text-blue-500" />
               Arquitetura &amp; Infraestrutura

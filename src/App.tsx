@@ -35,6 +35,24 @@ function App() {
       setProjects(projectsList)
       setLoading(false)
 
+      // Smart Sync: If local version is newer than Firestore, update Firestore
+      if (!snapshot.empty) {
+        portfolioData.forEach(async (local) => {
+          const remote = projectsList.find(p => p.id === local.id);
+          if (remote && local.version !== remote.version) {
+            console.log(`Smart Sync: Atualizando ${local.name} para v${local.version}`);
+            try {
+              await updateDoc(doc(db, 'projects', local.id), {
+                version: local.version,
+                updatedAt: serverTimestamp()
+              });
+            } catch (e) {
+              console.error("Sync error:", e);
+            }
+          }
+        });
+      }
+
       // Seed data if collection is empty
       if (snapshot.empty && loading) {
         seedData()
@@ -42,7 +60,7 @@ function App() {
     })
 
     return () => unsubscribe()
-  }, [])
+  }, [loading])
 
   // Function to seed initial data from JSON to Firestore
   const seedData = async () => {
@@ -208,7 +226,7 @@ function App() {
         )}
 
         {/* Project Grid */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
           {filteredProjects.length > 0 ? (
             filteredProjects.map((project) => (
               <ProjectCard

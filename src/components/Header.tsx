@@ -73,7 +73,7 @@ export function Header() {
 
   return (
     <header className="sticky top-0 z-20 border-b border-slate-800/60 bg-[#0a0e1a]/80 backdrop-blur-xl">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative">
         <div className="flex items-center justify-between h-16">
           <div className="flex items-center gap-3">
             <div className="w-8 h-8 rounded-lg bg-blue-600/20 border border-blue-500/30 flex items-center justify-center">
@@ -92,6 +92,12 @@ export function Header() {
           <div className="hidden sm:flex items-center gap-1.5 text-[11px] text-slate-600 font-mono">
             <span className="w-1 h-1 rounded-full bg-emerald-400 animate-pulse" />
             {dateStr}
+          </div>
+
+          <div className="absolute inset-0 hidden md:flex items-center justify-center pointer-events-none">
+            <p className="text-[10px] text-white font-mono tracking-[0.2em] uppercase opacity-60 hover:opacity-100 transition-opacity duration-300 pointer-events-auto cursor-default">
+              © ANDRESON MOTA - 2026
+            </p>
           </div>
         </div>
       </div>

@@ -77,7 +77,7 @@ export function ProjectCard({ project, isModified = false, onStatusToggle, onPro
           {/* Top Row: Name + Status */}
           <div className="flex items-start justify-between gap-3 pr-6">
             <div className="flex-1 min-w-0">
-              <h3 className="text-slate-100 font-semibold text-base leading-snug truncate group-hover:text-blue-300 transition-colors duration-200">
+              <h3 className="text-slate-100 font-semibold text-base leading-snug group-hover:text-blue-300 transition-colors duration-200">
                 {project.name}
               </h3>
               {project.category && (

@@ -36,7 +36,7 @@
     "name": "Minha Saúde",
     "description": "App de saúde pessoal com acompanhamento de métricas, gestação, exames e relatórios médicos inteligentes.",
     "status": "production",
-    "version": "1.6.3",
+    "version": "1.6.4",
     "stack": ["Next.js", "React", "TypeScript", "Firebase", "Tailwind CSS", "Vercel", "Google AI (Gemini)", "Recharts"],
     "url": "https://minha-saude.vercel.app",
     "repoUrl": "https://github.com/andresonrmota/minha-saude",
