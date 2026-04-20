@@ -1,4 +1,4 @@
-import { LayoutGrid, Zap, CheckCircle2, Code2, Archive } from 'lucide-react'
+import { LayoutGrid, Zap, CheckCircle2, Code2 } from 'lucide-react'
 import type { Project, ProjectStatus } from '../types'
 
 interface MetricCardProps {
@@ -6,10 +6,9 @@ interface MetricCardProps {
   value: number | string
   icon: React.ReactNode
   accent?: string
-  sub?: string
 }
 
-function MetricCard({ label, value, icon, accent = 'text-blue-400', sub }: MetricCardProps) {
+function MetricCard({ label, value, icon, accent = 'text-blue-400' }: MetricCardProps) {
   return (
     <div className="flex items-center gap-3 bg-slate-800/20 border border-slate-700/30 rounded-xl px-3 py-2 min-w-[100px] flex-shrink-0 transition-all hover:bg-slate-800/40">
       <div className={`${accent} opacity-70 scale-90`}>{icon}</div>
