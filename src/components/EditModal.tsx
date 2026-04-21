@@ -1,6 +1,7 @@
 import { useState, useEffect, useRef } from 'react'
 import { X, Globe, Mail, Flame, Triangle, FileText, ExternalLink, Component, Database, LayoutPanelTop } from 'lucide-react'
 import type { Project } from '../types'
+import { sanitizeUrl } from '../lib/sanitize'
 
 interface EditModalProps {
   project: Project
@@ -71,16 +72,16 @@ const FORM_FIELDS: FormField[] = [
 function InfoRow({ label, value, icon }: { label: string; value: string; icon: React.ReactNode }) {
   if (!value) return null
 
-  const isUrl = value.startsWith('http')
+  const safeUrl = sanitizeUrl(value)
 
   return (
     <div className="flex items-start gap-2.5 py-1.5">
       <span className="text-slate-500 mt-0.5 flex-shrink-0">{icon}</span>
       <div className="min-w-0">
         <p className="text-[10px] text-slate-600 uppercase tracking-wider font-medium">{label}</p>
-        {isUrl ? (
+        {safeUrl ? (
           <a
-            href={value}
+            href={safeUrl}
             target="_blank"
             rel="noopener noreferrer"
             className="text-sm text-blue-400 hover:text-blue-300 transition-colors inline-flex items-center gap-1 break-all"

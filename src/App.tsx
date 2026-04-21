@@ -1,6 +1,7 @@
 import { useState, useMemo, useCallback, useEffect } from 'react'
 import { collection, onSnapshot, query, orderBy, doc, updateDoc, setDoc, serverTimestamp } from 'firebase/firestore'
 import { db } from './lib/firebase'
+import { useAuth } from './hooks/useAuth'
 import type { FilterState, Project, ProjectStatus } from './types'
 import portfolioData from './data/portfolio.json'
 import { Header, MetricsBar } from './components/Header'
@@ -13,6 +14,7 @@ import { Loader2 } from 'lucide-react'
 const STATUS_CYCLE: ProjectStatus[] = ['production', 'beta', 'development']
 
 function App() {
+  const { user, isOwner, login, logout, loading: authLoading } = useAuth()
   const [projects, setProjects] = useState<Project[]>([])
   const [loading, setLoading] = useState(true)
   const [filter, setFilter] = useState<FilterState>({
@@ -22,7 +24,7 @@ function App() {
     sortOrder: 'desc',
   })
 
-  // Real-time synchronization
+  // Real-time synchronization (read-only for all users)
   useEffect(() => {
     const q = query(collection(db, 'projects'), orderBy('name', 'asc'))
     
@@ -35,35 +37,38 @@ function App() {
       setProjects(projectsList)
       setLoading(false)
 
-      // Smart Sync: If local version is newer than Firestore, update Firestore
-      if (!snapshot.empty) {
-        portfolioData.forEach(async (local) => {
-          const remote = projectsList.find(p => p.id === local.id);
-          if (remote && local.version !== remote.version) {
-            console.log(`Smart Sync: Atualizando ${local.name} para v${local.version}`);
-            try {
-              await updateDoc(doc(db, 'projects', local.id), {
-                version: local.version,
-                updatedAt: serverTimestamp()
-              });
-            } catch (e) {
-              console.error("Sync error:", e);
-            }
-          }
-        });
-      }
-
-      // Seed data if collection is empty
-      if (snapshot.empty && loading) {
+      // Seed data if collection is empty (only owner can do this)
+      if (snapshot.empty && loading && isOwner) {
         seedData()
       }
     })
 
     return () => unsubscribe()
-  }, [loading])
+  }, [loading, isOwner])
 
-  // Function to seed initial data from JSON to Firestore
+  // Sync versions from local JSON to Firestore (only when owner is logged in)
+  useEffect(() => {
+    if (!isOwner || projects.length === 0) return
+
+    portfolioData.forEach(async (local) => {
+      const remote = projects.find(p => p.id === local.id)
+      if (remote && local.version !== remote.version) {
+        console.log(`Smart Sync: Atualizando ${local.name} para v${local.version}`)
+        try {
+          await updateDoc(doc(db, 'projects', local.id), {
+            version: local.version,
+            updatedAt: serverTimestamp()
+          })
+        } catch (e) {
+          console.error("Sync error:", e)
+        }
+      }
+    })
+  }, [isOwner, projects])
+
+  // Function to seed initial data from JSON to Firestore (owner only)
   const seedData = async () => {
+    if (!isOwner) return
     console.log('Seeding initial data to Firestore...')
     for (const project of (portfolioData as any[])) {
       const { id, ...data } = project
@@ -75,8 +80,10 @@ function App() {
     }
   }
 
-  // Toggle a project's status directly in Firestore
+  // Toggle a project's status directly in Firestore (owner only)
   const handleStatusToggle = useCallback(async (projectId: string) => {
+    if (!isOwner) return
+
     const project = projects.find((p) => p.id === projectId)
     if (!project) return
 
@@ -92,10 +99,12 @@ function App() {
     } catch (err) {
       console.error('Error updating status:', err)
     }
-  }, [projects])
+  }, [projects, isOwner])
 
-  // Update any field(s) of a project directly in Firestore
+  // Update any field(s) of a project directly in Firestore (owner only)
   const handleProjectUpdate = useCallback(async (projectId: string, updates: Partial<Project>) => {
+    if (!isOwner) return
+
     try {
       await updateDoc(doc(db, 'projects', projectId), {
         ...updates,
@@ -104,7 +113,7 @@ function App() {
     } catch (err) {
       console.error('Error updating project:', err)
     }
-  }, [])
+  }, [isOwner])
 
   const filteredProjects = useMemo(() => {
     const q = filter.query.toLowerCase().trim()
@@ -154,7 +163,7 @@ function App() {
 
   const hasActiveFilter = filter.query !== '' || filter.status !== 'all'
 
-  if (loading) {
+  if (loading || authLoading) {
     return (
       <div className="min-h-screen flex flex-col items-center justify-center bg-[#0a0e1a] text-blue-400">
         <Loader2 className="w-10 h-10 animate-spin mb-4" />
@@ -165,7 +174,7 @@ function App() {
 
   return (
     <div className="min-h-screen flex flex-col">
-      <Header />
+      <Header user={user} isOwner={isOwner} onLogin={login} onLogout={logout} />
 
       <main className="flex-1 max-w-7xl mx-auto w-full px-4 sm:px-6 lg:px-8 py-8">
         {/* Controls Bar: Metrics + Search */}
@@ -232,8 +241,9 @@ function App() {
               <ProjectCard
                 key={project.id}
                 project={project}
-                onStatusToggle={handleStatusToggle}
-                onProjectUpdate={handleProjectUpdate}
+                isOwner={isOwner}
+                onStatusToggle={isOwner ? handleStatusToggle : undefined}
+                onProjectUpdate={isOwner ? handleProjectUpdate : undefined}
               />
             ))
           ) : (

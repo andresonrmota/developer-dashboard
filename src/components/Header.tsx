@@ -1,5 +1,6 @@
-import { LayoutGrid, Zap, CheckCircle2, Code2 } from 'lucide-react'
+import { LayoutGrid, Zap, CheckCircle2, Code2, LogIn, LogOut, Shield } from 'lucide-react'
 import type { Project, ProjectStatus } from '../types'
+import type { User } from 'firebase/auth'
 
 interface MetricCardProps {
   label: string
@@ -62,7 +63,14 @@ export function MetricsBar({ projects }: { projects: Project[] }) {
   )
 }
 
-export function Header() {
+interface HeaderProps {
+  user: User | null
+  isOwner: boolean
+  onLogin: () => void
+  onLogout: () => void
+}
+
+export function Header({ user, isOwner, onLogin, onLogout }: HeaderProps) {
   const now = new Date()
   const dateStr = now.toLocaleDateString('pt-BR', {
     weekday: 'short',
@@ -89,15 +97,56 @@ export function Header() {
             </div>
           </div>
 
-          <div className="hidden sm:flex items-center gap-1.5 text-[11px] text-slate-600 font-mono">
-            <span className="w-1 h-1 rounded-full bg-emerald-400 animate-pulse" />
-            {dateStr}
-          </div>
-
           <div className="absolute inset-0 hidden md:flex items-center justify-center pointer-events-none">
             <p className="text-[10px] text-white font-mono tracking-[0.2em] uppercase opacity-60 hover:opacity-100 transition-opacity duration-300 pointer-events-auto cursor-default">
               © ANDRESON MOTA - 2026
             </p>
+          </div>
+
+          <div className="flex items-center gap-3">
+            <div className="hidden sm:flex items-center gap-1.5 text-[11px] text-slate-600 font-mono">
+              <span className="w-1 h-1 rounded-full bg-emerald-400 animate-pulse" />
+              {dateStr}
+            </div>
+
+            {/* Auth section */}
+            {user ? (
+              <div className="flex items-center gap-2">
+                {isOwner && (
+                  <span className="hidden sm:inline-flex items-center gap-1 px-2 py-0.5 rounded-md text-[10px] font-medium bg-emerald-500/10 text-emerald-400 border border-emerald-500/25">
+                    <Shield size={10} />
+                    Owner
+                  </span>
+                )}
+                <img
+                  src={user.photoURL ?? ''}
+                  alt=""
+                  className="w-7 h-7 rounded-full border border-slate-700/60 object-cover"
+                  referrerPolicy="no-referrer"
+                />
+                <button
+                  onClick={onLogout}
+                  className="p-1.5 rounded-lg text-slate-500 hover:text-slate-300 hover:bg-slate-800/60 transition-all"
+                  title="Sair"
+                >
+                  <LogOut size={14} />
+                </button>
+              </div>
+            ) : (
+              <button
+                onClick={onLogin}
+                className="
+                  inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium
+                  text-slate-400 border border-slate-700/50
+                  hover:text-slate-200 hover:border-slate-600 hover:bg-slate-800/60
+                  active:scale-95 transition-all duration-200
+                "
+                title="Entrar com Google"
+              >
+                <LogIn size={13} />
+                <span className="hidden sm:inline">Entrar</span>
+              </button>
+            )}
           </div>
         </div>
       </div>

@@ -4,10 +4,12 @@ import type { Project } from '../types'
 import { StatusBadge } from './StatusBadge'
 import { StackBadge } from './StackBadge'
 import { EditModal } from './EditModal'
+import { sanitizeUrl } from '../lib/sanitize'
 
 interface ProjectCardProps {
   project: Project
   isModified?: boolean
+  isOwner?: boolean
   onStatusToggle?: (projectId: string) => void
   onProjectUpdate?: (projectId: string, updates: Partial<Project>) => void
 }
@@ -43,9 +45,13 @@ function hasMetadata(project: Project): boolean {
   )
 }
 
-export function ProjectCard({ project, isModified = false, onStatusToggle, onProjectUpdate }: ProjectCardProps) {
+export function ProjectCard({ project, isModified = false, isOwner = false, onStatusToggle, onProjectUpdate }: ProjectCardProps) {
   const [showModal, setShowModal] = useState(false)
   const hasMeta = hasMetadata(project)
+
+  // Sanitize URLs before rendering
+  const safeUrl = sanitizeUrl(project.url)
+  const safeRepoUrl = sanitizeUrl(project.repoUrl)
 
   return (
     <>
@@ -57,25 +63,27 @@ export function ProjectCard({ project, isModified = false, onStatusToggle, onPro
           ${isModified ? 'card-modified' : ''}
         `}
       >
-        {/* Edit button — top-right corner */}
-        <button
-          onClick={() => setShowModal(true)}
-          className={`
-            absolute top-3 right-3 p-1.5 rounded-lg
-            transition-all duration-200 z-10
-            ${hasMeta
-              ? 'text-blue-400/60 hover:text-blue-300 hover:bg-blue-500/10'
-              : 'text-slate-600 opacity-0 group-hover:opacity-100 hover:text-slate-400 hover:bg-slate-700/50'
-            }
-          `}
-          title="Editar metadados"
-        >
-          <Settings size={14} />
-        </button>
+        {/* Edit button — only visible for owner */}
+        {isOwner && (
+          <button
+            onClick={() => setShowModal(true)}
+            className={`
+              absolute top-3 right-3 p-1.5 rounded-lg
+              transition-all duration-200 z-10
+              ${hasMeta
+                ? 'text-blue-400/60 hover:text-blue-300 hover:bg-blue-500/10'
+                : 'text-slate-600 opacity-0 group-hover:opacity-100 hover:text-slate-400 hover:bg-slate-700/50'
+              }
+            `}
+            title="Editar metadados"
+          >
+            <Settings size={14} />
+          </button>
+        )}
 
         <div className="flex-1 flex flex-col gap-4">
           {/* Top Row: Name + Status */}
-          <div className="flex items-start justify-between gap-3 pr-6">
+          <div className={`flex items-start justify-between gap-3 ${isOwner ? 'pr-6' : ''}`}>
             <div className="flex-1 min-w-0">
               <h3 className="text-slate-100 font-semibold text-base leading-snug group-hover:text-blue-300 transition-colors duration-200">
                 {project.name}
@@ -89,8 +97,8 @@ export function ProjectCard({ project, isModified = false, onStatusToggle, onPro
             </div>
             <StatusBadge
               status={project.status}
-              interactive={!!onStatusToggle}
-              onClick={onStatusToggle ? () => onStatusToggle(project.id) : undefined}
+              interactive={isOwner && !!onStatusToggle}
+              onClick={isOwner && onStatusToggle ? () => onStatusToggle(project.id) : undefined}
             />
           </div>
 
@@ -152,9 +160,9 @@ export function ProjectCard({ project, isModified = false, onStatusToggle, onPro
           </div>
 
           <div className="flex items-center gap-2">
-            {project.repoUrl && (
+            {safeRepoUrl && (
               <a
-                href={project.repoUrl}
+                href={safeRepoUrl}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="text-slate-500 hover:text-slate-300 transition-colors p-1 rounded hover:bg-slate-700/50"
@@ -166,9 +174,9 @@ export function ProjectCard({ project, isModified = false, onStatusToggle, onPro
                 </svg>
               </a>
             )}
-            {project.url && (
+            {safeUrl && (
               <a
-                href={project.url}
+                href={safeUrl}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="text-slate-500 hover:text-blue-400 transition-colors p-1 rounded hover:bg-blue-500/10"
@@ -182,8 +190,8 @@ export function ProjectCard({ project, isModified = false, onStatusToggle, onPro
         </div>
       </article>
 
-      {/* Edit Modal */}
-      {showModal && (
+      {/* Edit Modal — only renders for owner */}
+      {isOwner && showModal && (
         <EditModal
           project={project}
           onSave={(id, updates) => {
