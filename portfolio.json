@@ -2,9 +2,9 @@
   {
     "id": "cartao-pro",
     "name": "Cartão Pro",
-    "description": "Gestão financeira inteligente para controle de cartões de crédito com rateio, dashboards e insights por IA.",
+    "description": "Gestão financeira inteligente para controle de cartões de crédito com rateio, conciliação de faturas, dashboards e insights por IA.",
     "status": "production",
-    "version": "3.2.2",
+    "version": "3.2.4",
     "stack": [
       "React",
       "TypeScript",
@@ -17,8 +17,31 @@
     ],
     "url": "https://projetos-andreson.vercel.app",
     "repoUrl": "https://github.com/andresonrmota/Projetos-Andreson",
-    "lastUpdated": "2026-04-17T14:34:02Z",
-    "category": "Web App"
+    "lastUpdated": "2026-04-21T17:01:45Z",
+    "category": "Web App",
+    "businessDimension": {
+      "modules": [
+        "Gestão de Gastos",
+        "Controle de Cartão de Crédito",
+        "Rateio/Sharing",
+        "Conciliação de Faturas",
+        "Conversão de Dólar",
+        "Gestão de Pontos",
+        "Despesas Recorrentes",
+        "Dashboards Interativos",
+        "Insights com IA"
+      ],
+      "entities": [
+        "Despesas",
+        "Cartões",
+        "Categorias",
+        "Pessoas",
+        "Rateios",
+        "Bloqueios de Competência",
+        "Configurações",
+        "Pontos"
+      ]
+    }
   },
   {
     "id": "gestao-unidade",
