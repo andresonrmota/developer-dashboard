@@ -1,4 +1,4 @@
-import { LayoutGrid, Zap, CheckCircle2, Code2, LogIn, LogOut, Shield } from 'lucide-react'
+import { LayoutGrid, Zap, CheckCircle2, Code2, LogIn, LogOut, Shield, Moon, Sun } from 'lucide-react'
 import type { Project, ProjectStatus } from '../types'
 import type { User } from 'firebase/auth'
 
@@ -9,13 +9,13 @@ interface MetricCardProps {
   accent?: string
 }
 
-function MetricCard({ label, value, icon, accent = 'text-blue-400' }: MetricCardProps) {
+function MetricCard({ label, value, icon, accent = 'text-blue-600 dark:text-blue-400' }: MetricCardProps) {
   return (
-    <div className="flex items-center gap-3 bg-slate-800/20 border border-slate-700/30 rounded-xl px-3 py-2 min-w-[100px] flex-shrink-0 transition-all hover:bg-slate-800/40">
+    <div className="flex items-center gap-3 bg-slate-50 dark:bg-slate-800/20 border border-slate-100 dark:border-slate-700/30 rounded-xl px-3 py-2 min-w-[100px] flex-shrink-0 transition-all hover:bg-slate-100 dark:hover:bg-slate-800/40">
       <div className={`${accent} opacity-70 scale-90`}>{icon}</div>
       <div>
         <p className={`text-lg font-bold font-mono ${accent} leading-none`}>{value}</p>
-        <p className="text-slate-500 text-[10px] mt-0.5 leading-none uppercase tracking-wider">{label}</p>
+        <p className="text-slate-400 dark:text-slate-500 text-[10px] mt-0.5 leading-none uppercase tracking-wider">{label}</p>
       </div>
     </div>
   )
@@ -68,9 +68,11 @@ interface HeaderProps {
   isOwner: boolean
   onLogin: () => void
   onLogout: () => void
+  isDarkMode: boolean
+  onThemeToggle: () => void
 }
 
-export function Header({ user, isOwner, onLogin, onLogout }: HeaderProps) {
+export function Header({ user, isOwner, onLogin, onLogout, isDarkMode, onThemeToggle }: HeaderProps) {
   const now = new Date()
   const dateStr = now.toLocaleDateString('pt-BR', {
     weekday: 'short',
@@ -80,7 +82,7 @@ export function Header({ user, isOwner, onLogin, onLogout }: HeaderProps) {
   })
 
   return (
-    <header className="sticky top-0 z-20 border-b border-slate-800/60 bg-[#0a0e1a]/80 backdrop-blur-xl">
+    <header className="sticky top-0 z-20 border-b border-slate-200 dark:border-slate-800/60 bg-white/80 dark:bg-[#0a0e1a]/80 backdrop-blur-xl transition-colors duration-300">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative">
         <div className="flex items-center justify-between h-16">
           <div className="flex items-center gap-3">
@@ -88,26 +90,34 @@ export function Header({ user, isOwner, onLogin, onLogout }: HeaderProps) {
               <Code2 size={16} className="text-blue-400" />
             </div>
             <div>
-              <h1 className="text-slate-100 font-semibold text-lg leading-none tracking-tight">
+              <h1 className="text-slate-900 dark:text-slate-100 font-semibold text-lg leading-none tracking-tight">
                 Dev Portal
               </h1>
-              <p className="text-slate-600 text-[11px] font-mono mt-0.5">
+              <p className="text-slate-400 dark:text-slate-600 text-[11px] font-mono mt-0.5">
                 Internal Developer Dashboard
               </p>
             </div>
           </div>
 
           <div className="absolute inset-0 hidden md:flex items-center justify-center pointer-events-none">
-            <p className="text-[10px] text-white font-mono tracking-[0.2em] uppercase opacity-60 hover:opacity-100 transition-opacity duration-300 pointer-events-auto cursor-default">
+            <p className="text-[10px] text-slate-400 dark:text-white font-mono tracking-[0.2em] uppercase opacity-60 hover:opacity-100 transition-opacity duration-300 pointer-events-auto cursor-default">
               © ANDRESON MOTA - 2026
             </p>
           </div>
 
           <div className="flex items-center gap-3">
-            <div className="hidden sm:flex items-center gap-1.5 text-[11px] text-slate-600 font-mono">
+            <div className="hidden sm:flex items-center gap-1.5 text-[11px] text-slate-400 dark:text-slate-600 font-mono">
               <span className="w-1 h-1 rounded-full bg-emerald-400 animate-pulse" />
               {dateStr}
             </div>
+
+            <button
+              onClick={onThemeToggle}
+              className="p-2 rounded-lg text-slate-500 hover:bg-slate-100 dark:hover:bg-slate-800/60 transition-all duration-200"
+              title={isDarkMode ? 'Ativar modo claro' : 'Ativar modo escuro'}
+            >
+              {isDarkMode ? <Sun size={15} className="text-amber-400" /> : <Moon size={15} />}
+            </button>
 
             {/* Auth section */}
             {user ? (

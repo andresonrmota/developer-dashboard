@@ -85,11 +85,11 @@ export function ProjectCard({ project, isModified = false, isOwner = false, onSt
           {/* Top Row: Name + Status */}
           <div className={`flex items-start justify-between gap-3 ${isOwner ? 'pr-6' : ''}`}>
             <div className="flex-1 min-w-0">
-              <h3 className="text-slate-100 font-semibold text-base leading-snug group-hover:text-blue-300 transition-colors duration-200">
+              <h3 className="text-slate-900 dark:text-slate-100 font-semibold text-base leading-snug group-hover:text-blue-600 dark:group-hover:text-blue-300 transition-colors duration-200">
                 {project.name}
               </h3>
               {project.category && (
-                <span className="flex items-center gap-1 mt-0.5 text-slate-500 text-xs">
+                <span className="flex items-center gap-1 mt-0.5 text-slate-400 dark:text-slate-500 text-xs">
                   <Tag size={10} />
                   {project.category}
                 </span>
@@ -103,7 +103,7 @@ export function ProjectCard({ project, isModified = false, isOwner = false, onSt
           </div>
 
           {/* Description */}
-          <p className="text-slate-400 text-sm leading-relaxed">
+          <p className="text-slate-600 dark:text-slate-400 text-sm leading-relaxed">
             {project.description}
           </p>
 
@@ -111,7 +111,7 @@ export function ProjectCard({ project, isModified = false, isOwner = false, onSt
           {hasMeta && (
             <div className="flex flex-wrap gap-1.5">
               {project.hostingAccount && (
-                <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-md text-[10px] font-medium bg-slate-800/60 text-slate-500 border border-slate-700/40">
+                <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-md text-[10px] font-medium bg-slate-100 dark:bg-slate-800/60 text-slate-600 dark:text-slate-500 border border-slate-200 dark:border-slate-700/40">
                   📧 {project.hostingAccount.split('@')[0]}
                 </span>
               )}
@@ -121,7 +121,7 @@ export function ProjectCard({ project, isModified = false, isOwner = false, onSt
                 </span>
               )}
               {project.vercelLogin && (
-                <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-md text-[10px] font-medium bg-slate-800/60 text-slate-400 border border-slate-700/40">
+                <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-md text-[10px] font-medium bg-slate-100 dark:bg-slate-800/60 text-slate-600 dark:text-slate-400 border border-slate-200 dark:border-slate-700/40">
                   ▲ Vercel
                 </span>
               )}
@@ -147,10 +147,10 @@ export function ProjectCard({ project, isModified = false, isOwner = false, onSt
         </div>
 
         {/* Footer: Version + Date + Links */}
-        <div className="flex items-center justify-between pt-2 border-t border-slate-700/50">
+        <div className="flex items-center justify-between pt-2 border-t border-slate-100 dark:border-slate-700/50">
           <div className="flex items-center gap-3 text-xs text-slate-500">
-            <span className="flex items-center gap-1 font-mono text-slate-400">
-              <GitBranch size={11} className="text-blue-400" />
+            <span className="flex items-center gap-1 font-mono text-slate-500 dark:text-slate-400">
+              <GitBranch size={11} className="text-blue-600 dark:text-blue-400" />
               v{project.version}
             </span>
             <span className="flex items-center gap-1">

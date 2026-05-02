@@ -41,8 +41,8 @@ export function SearchBar({
             onFilterChange({ ...filter, query: e.target.value })
           }
           className="
-            w-full bg-[#111827]/80 border border-slate-700/60 rounded-lg
-            pl-10 pr-10 py-2.5 text-sm text-slate-200 placeholder:text-slate-600
+            w-full bg-slate-50 dark:bg-[#111827]/80 border border-slate-200 dark:border-slate-700/60 rounded-lg
+            pl-10 pr-10 py-2.5 text-sm text-slate-800 dark:text-slate-200 placeholder:text-slate-400 dark:placeholder:text-slate-600
             focus:outline-none focus:border-blue-500/60 focus:ring-1 focus:ring-blue-500/20
             transition-all duration-200
           "
@@ -69,8 +69,8 @@ export function SearchBar({
             })
           }
           className="
-            bg-[#111827]/80 border border-slate-700/60 rounded-lg
-            px-3 py-2.5 text-sm text-slate-300
+            bg-slate-50 dark:bg-[#111827]/80 border border-slate-200 dark:border-slate-700/60 rounded-lg
+            px-3 py-2.5 text-sm text-slate-700 dark:text-slate-300
             focus:outline-none focus:border-blue-500/60 focus:ring-1 focus:ring-blue-500/20
             transition-all duration-200 appearance-none pr-8 cursor-pointer
           "
