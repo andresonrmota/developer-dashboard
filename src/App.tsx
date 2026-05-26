@@ -8,6 +8,7 @@ import { Header, MetricsBar } from './components/Header'
 import { SearchBar } from './components/SearchBar'
 import { ProjectCard } from './components/ProjectCard'
 import { EmptyState } from './components/EmptyState'
+import { DownloadsPage } from './components/DownloadsPage'
 import { Loader2 } from 'lucide-react'
 
 // Cyclic status order for toggling
@@ -28,6 +29,10 @@ function App() {
     sortOrder: 'desc',
   })
   const [lastSyncDate, setLastSyncDate] = useState<string>(new Date().toLocaleString('pt-BR').replace(', ', ' - '))
+
+  if (window.location.pathname === '/downloads') {
+    return <DownloadsPage />
+  }
 
   // Real-time synchronization (read-only for all users)
   useEffect(() => {
