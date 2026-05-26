@@ -38,7 +38,7 @@ export function DownloadsPage() {
               Compatível com Windows 10 e Windows 11 (64-bits).
             </p>
             <a 
-              href="https://github.com/andresonrmota/automove/releases/download/v1.3.0/AutoMove.Setup.1.3.0.exe" 
+              href="https://github.com/andresonrmota/automove/releases/download/v1.3.1/AutoMove.Setup.1.3.1.exe" 
               className="w-full flex items-center justify-center gap-2 bg-blue-600 hover:bg-blue-700 text-white font-medium py-3 px-6 rounded-xl transition-colors"
             >
               <Download className="w-5 h-5" />
