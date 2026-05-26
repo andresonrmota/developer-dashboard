@@ -37,8 +37,8 @@ export function DownloadsPage() {
             <p className="text-slate-500 text-center mb-8">
               Compatível com Windows 10 e Windows 11 (64-bits).
             </p>
-            <a 
-              href="https://github.com/andresonrmota/automove/releases/download/v1.3.1/AutoMove.Setup.1.3.1.exe" 
+            <a
+              href="https://github.com/andresonrmota/automove/releases/download/v1.3.1/AutoMove.Setup.1.3.1.exe"
               className="w-full flex items-center justify-center gap-2 bg-blue-600 hover:bg-blue-700 text-white font-medium py-3 px-6 rounded-xl transition-colors"
             >
               <Download className="w-5 h-5" />
@@ -53,8 +53,8 @@ export function DownloadsPage() {
             <p className="text-slate-500 text-center mb-8">
               Compatível com macOS Monterey ou superior (Apple Silicon e Intel).
             </p>
-            <a 
-              href="https://github.com/andresonrmota/automove/releases/download/v1.3.0/AutoMove-1.3.0.dmg" 
+            <a
+              href="https://github.com/andresonrmota/automove/releases/download/v1.3.0/AutoMove-1.3.0.dmg"
               className="w-full flex items-center justify-center gap-2 bg-slate-800 dark:bg-slate-200 hover:bg-slate-900 dark:hover:bg-white text-white dark:text-slate-900 font-medium py-3 px-6 rounded-xl transition-colors"
             >
               <Download className="w-5 h-5" />
@@ -64,7 +64,7 @@ export function DownloadsPage() {
         </div>
 
         <div className="mt-16 text-center text-sm text-slate-500">
-          <p>Versão atual: 1.3.0</p>
+          <p>Versão atual: 1.3.1</p>
         </div>
       </main>
     </div>
