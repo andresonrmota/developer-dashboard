@@ -54,7 +54,7 @@ export function DownloadsPage() {
               Compatível com macOS Monterey ou superior (Apple Silicon e Intel).
             </p>
             <a
-              href="https://github.com/andresonrmota/automove/releases/download/v1.3.0/AutoMove-1.3.0.dmg"
+              href="https://github.com/andresonrmota/automove/releases/download/v1.4.0/AutoMove-1.4.0.dmg"
               className="w-full flex items-center justify-center gap-2 bg-slate-800 dark:bg-slate-200 hover:bg-slate-900 dark:hover:bg-white text-white dark:text-slate-900 font-medium py-3 px-6 rounded-xl transition-colors"
             >
               <Download className="w-5 h-5" />
@@ -64,7 +64,7 @@ export function DownloadsPage() {
         </div>
 
         <div className="mt-16 text-center text-sm text-slate-500">
-          <p>Versão atual: 1.3.1</p>
+          <p>Versão atual: 1.3.1 Windows e 1.4.0 MacOs</p>
         </div>
       </main>
     </div>
