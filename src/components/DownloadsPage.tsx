@@ -38,8 +38,8 @@ export function DownloadsPage() {
               Compatível com Windows 10 e Windows 11 (64-bits).
             </p>
             <a
-              href="https://github.com/andresonrmota/automove/releases/download/v1.3.1/AutoMove.Setup.1.3.1.exe"
-              className="w-full flex items-center justify-center gap-2 bg-blue-600 hover:bg-blue-700 text-white font-medium py-3 px-6 rounded-xl transition-colors"
+              href="https://github.com/andresonrmota/automove/releases/download/v1.5.0/AutoMove.Setup.1.5.0.exe"
+              className="w-full my-auto flex items-center justify-center gap-2 bg-blue-600 hover:bg-blue-700 text-white font-medium py-3 px-6 rounded-xl transition-colors"
             >
               <Download className="w-5 h-5" />
               Baixar para Windows
@@ -51,20 +51,29 @@ export function DownloadsPage() {
             <Apple className="w-16 h-16 text-slate-800 dark:text-slate-200 mb-6" />
             <h2 className="text-2xl font-semibold mb-2">macOS</h2>
             <p className="text-slate-500 text-center mb-8">
-              Compatível com macOS Monterey ou superior (Apple Silicon e Intel).
+              Compatível com macOS Monterey ou superior.
             </p>
-            <a
-              href="https://github.com/andresonrmota/automove/releases/download/v1.4.0/AutoMove-1.4.0.dmg"
-              className="w-full flex items-center justify-center gap-2 bg-slate-800 dark:bg-slate-200 hover:bg-slate-900 dark:hover:bg-white text-white dark:text-slate-900 font-medium py-3 px-6 rounded-xl transition-colors"
-            >
-              <Download className="w-5 h-5" />
-              Baixar para macOS
-            </a>
+            <div className="w-full mt-auto flex flex-col gap-3">
+              <a
+                href="https://github.com/andresonrmota/automove/releases/download/v1.5.0/AutoMove-1.5.0-arm64.dmg"
+                className="w-full flex items-center justify-center gap-2 bg-slate-800 dark:bg-slate-200 hover:bg-slate-900 dark:hover:bg-white text-white dark:text-slate-900 font-medium py-3 px-6 rounded-xl transition-colors"
+              >
+                <Download className="w-5 h-5" />
+                Apple Silicon
+              </a>
+              <a
+                href="https://github.com/andresonrmota/automove/releases/download/v1.5.0/AutoMove-1.5.0.dmg"
+                className="w-full flex items-center justify-center gap-2 bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-900 dark:text-white font-medium py-3 px-6 rounded-xl transition-colors border border-slate-200 dark:border-slate-700"
+              >
+                <Download className="w-5 h-5" />
+                Processador Intel
+              </a>
+            </div>
           </div>
         </div>
 
         <div className="mt-16 text-center text-sm text-slate-500">
-          <p>Versão atual: 1.3.1 Windows e 1.4.0 MacOs</p>
+          <p>Versão atual: 1.5.0 Windows e 1.5.0 MacOs</p>
         </div>
       </main>
     </div>
