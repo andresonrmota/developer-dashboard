@@ -8,7 +8,8 @@ import { Header, MetricsBar } from './components/Header'
 import { SearchBar } from './components/SearchBar'
 import { ProjectCard } from './components/ProjectCard'
 import { EmptyState } from './components/EmptyState'
-import { DownloadsPage } from './components/DownloadsPage'
+import { AutoMoveDownloadPage } from './components/downloads/AutoMoveDownloadPage'
+import { VideoDownloaderDownloadPage } from './components/downloads/VideoDownloaderDownloadPage'
 import { Loader2 } from 'lucide-react'
 
 // Cyclic status order for toggling
@@ -30,8 +31,15 @@ function App() {
   })
   const [lastSyncDate, setLastSyncDate] = useState<string>(new Date().toLocaleString('pt-BR').replace(', ', ' - '))
 
+  // Roteamento simples por pathname — o projeto não usa react-router, e duas
+  // páginas estáticas não justificam a dependência. "/downloads" continua
+  // apontando para o AutoMove (link já compartilhado antes) para não quebrar
+  // quem já tem esse endereço salvo.
   if (window.location.pathname === '/downloads') {
-    return <DownloadsPage />
+    return <AutoMoveDownloadPage />
+  }
+  if (window.location.pathname === '/downloads/video-downloader') {
+    return <VideoDownloaderDownloadPage />
   }
 
   // Real-time synchronization (read-only for all users)

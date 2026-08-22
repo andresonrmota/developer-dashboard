@@ -128,6 +128,22 @@
     "notes": ""
   },
   {
+    "id": "video-downloader",
+    "name": "Video Downloader",
+    "description": "App gráfico para baixar vídeos e áudios do YouTube colando um link, sem terminal — construído para uso doméstico, com fila em lote e conversão automática de formato.",
+    "status": "development",
+    "version": "0.9.0",
+    "stack": ["Python", "PySide6 (Qt)", "yt-dlp", "FFmpeg", "PyInstaller"],
+    "url": "",
+    "repoUrl": "https://github.com/andresonrmota/VideoDownloader",
+    "lastUpdated": "2026-08-23T00:00:00Z",
+    "category": "Desktop App",
+    "hostingAccount": "",
+    "firebaseLogin": "",
+    "vercelLogin": "",
+    "notes": ""
+  },
+  {
     "id": "scan-flights",
     "name": "ScanFlights",
     "description": "Sistema automatizado de monitoramento de passagens aéreas com notificações via e-mail e agendamento (Cron).",
