@@ -1,8 +1,8 @@
 import { Video, Monitor } from 'lucide-react';
 import { DownloadLayout } from './DownloadLayout';
-import { PendingPlatformCard } from './PlatformCard';
+import { PlatformCard } from './PlatformCard';
 
-const VERSION = '0.9';
+const VERSION = '1.0.0';
 
 /**
  * Página de download do Video Downloader.
@@ -12,11 +12,6 @@ const VERSION = '0.9';
  * assinatura Apple Developer, o Gatekeeper bloqueia mesmo (não é só um aviso
  * contornável). No Mac o caminho é compilar localmente a partir do
  * repositório (ver README do projeto).
- *
- * O link do Windows ainda não existe — vira um botão real assim que o
- * primeiro Release com o .exe for publicado no GitHub. Basta trocar o
- * PendingPlatformCard abaixo por um PlatformCard com o href do asset,
- * seguindo o mesmo padrão de AutoMoveDownloadPage.tsx.
  */
 export function VideoDownloaderDownloadPage() {
   return (
@@ -28,10 +23,16 @@ export function VideoDownloaderDownloadPage() {
     >
       <div className="grid place-items-center">
         <div className="w-full max-w-sm">
-          <PendingPlatformCard
+          <PlatformCard
             icon={<Monitor className="w-16 h-16 text-blue-500" />}
             title="Windows"
             description="Compatível com Windows 10 e Windows 11 (64-bits)."
+            links={[
+              {
+                label: 'Baixar para Windows',
+                href: 'https://github.com/andresonrmota/developer-dashboard/releases/download/v1.0.0/VideoDownloader-1.0.0-windows-x64-installer.exe',
+              },
+            ]}
           />
         </div>
       </div>
