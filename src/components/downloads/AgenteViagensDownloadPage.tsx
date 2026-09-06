@@ -3,11 +3,11 @@ import { DownloadLayout } from './DownloadLayout';
 import { PlatformCard } from './PlatformCard';
 
 const VERSION = '1.0.0';
-const RELEASE_URL = 'https://github.com/andresonrmota/Agente-Viagens/releases/tag/v1.0.0';
+const RELEASE_URL = 'https://github.com/andresonrmota/developer-dashboard/releases/tag/v1.0.0av';
 const DOWNLOAD_WINDOWS =
-  'https://github.com/andresonrmota/Agente-Viagens/releases/download/v1.0.0/AgenteViagens-Setup-v1.0.0.exe';
+  'https://github.com/andresonrmota/developer-dashboard/releases/download/v1.0.0av/AgenteViagens-Setup-v1.0.0.exe';
 const DOWNLOAD_MACOS =
-  'https://github.com/andresonrmota/Agente-Viagens/releases/download/v1.0.0/AgenteViagens-1.0.0-macos-arm64.zip';
+  'https://github.com/andresonrmota/developer-dashboard/releases/download/v1.0.0av/AgenteViagens-1.0.0-macos-arm64.zip';
 
 /**
  * Página de download do Agente de Viagens.
