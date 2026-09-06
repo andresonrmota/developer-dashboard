@@ -2,12 +2,12 @@ import { Plane, Monitor, Apple, ExternalLink, HelpCircle } from 'lucide-react';
 import { DownloadLayout } from './DownloadLayout';
 import { PlatformCard } from './PlatformCard';
 
-const VERSION = '1.0.0';
-const RELEASE_URL = 'https://github.com/andresonrmota/developer-dashboard/releases/tag/v1.0.0av';
+const VERSION = '1.0.1';
+const RELEASE_URL = 'https://github.com/andresonrmota/developer-dashboard/releases/tag/v1.0.1av';
 const DOWNLOAD_WINDOWS =
-  'https://github.com/andresonrmota/developer-dashboard/releases/download/v1.0.0av/AgenteViagens-Setup-v1.0.0.exe';
+  'https://github.com/andresonrmota/developer-dashboard/releases/download/v1.0.1av/AgenteViagens-Setup-v1.0.1.exe';
 const DOWNLOAD_MACOS =
-  'https://github.com/andresonrmota/developer-dashboard/releases/download/v1.0.0av/AgenteViagens-1.0.0-macos-arm64.zip';
+  'https://github.com/andresonrmota/developer-dashboard/releases/download/v1.0.1av/AgenteViagens-1.0.1-macos-arm64.zip';
 
 /**
  * Página de download do Agente de Viagens.
