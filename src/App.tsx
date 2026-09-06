@@ -10,6 +10,7 @@ import { ProjectCard } from './components/ProjectCard'
 import { EmptyState } from './components/EmptyState'
 import { AutoMoveDownloadPage } from './components/downloads/AutoMoveDownloadPage'
 import { VideoDownloaderDownloadPage } from './components/downloads/VideoDownloaderDownloadPage'
+import { AgenteViagensDownloadPage } from './components/downloads/AgenteViagensDownloadPage'
 import { Loader2 } from 'lucide-react'
 
 // Cyclic status order for toggling
@@ -31,15 +32,19 @@ function App() {
   })
   const [lastSyncDate, setLastSyncDate] = useState<string>(new Date().toLocaleString('pt-BR').replace(', ', ' - '))
 
-  // Roteamento simples por pathname — o projeto não usa react-router, e duas
-  // páginas estáticas não justificam a dependência. "/downloads" continua
-  // apontando para o AutoMove (link já compartilhado antes) para não quebrar
-  // quem já tem esse endereço salvo.
-  if (window.location.pathname === '/downloads') {
+  // Roteamento simples por pathname
+  const normalizedPath = window.location.pathname.replace(/\/+$/, '')
+  if (normalizedPath === '/downloads') {
     return <AutoMoveDownloadPage />
   }
-  if (window.location.pathname === '/downloads/video-downloader') {
+  if (normalizedPath === '/downloads/video-downloader') {
     return <VideoDownloaderDownloadPage />
+  }
+  if (
+    normalizedPath === '/downloads/agente-viagens' ||
+    normalizedPath === '/downloads/agente-de-viagens'
+  ) {
+    return <AgenteViagensDownloadPage />
   }
 
   // Real-time synchronization (read-only for all users)

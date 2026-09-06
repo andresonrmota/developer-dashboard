@@ -222,5 +222,21 @@
     "firebaseLogin": "",
     "vercelLogin": "",
     "notes": ""
+  },
+  {
+    "id": "agente-viagens",
+    "name": "Agente Viagens",
+    "description": "App desktop para automação assistida de envio de mensagens de aniversário e relacionamento com clientes via WhatsApp Web.",
+    "status": "production",
+    "version": "1.0.0",
+    "stack": ["Python", "PySide6 (Qt)", "Playwright", "SQLite", "Inno Setup", "PyInstaller"],
+    "url": "/downloads/agente-viagens",
+    "repoUrl": "https://github.com/andresonrmota/Agente-Viagens",
+    "lastUpdated": "2026-09-06T13:50:00Z",
+    "category": "Desktop App",
+    "hostingAccount": "",
+    "firebaseLogin": "",
+    "vercelLogin": "",
+    "notes": "Downloads disponíveis para Windows (.exe) e macOS (.zip)"
   }
 ]
