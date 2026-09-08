@@ -5,9 +5,9 @@ import { PlatformCard } from './PlatformCard';
 const VERSION = '1.1.2';
 const RELEASE_URL = 'https://github.com/andresonrmota/developer-dashboard/releases/tag/v1.1.2av';
 const DOWNLOAD_WINDOWS =
-  'https://github.com/andresonrmota/developer-dashboard/releases/download/v1.1.1av/AgenteViagens-Setup-v1.1.1.exe';
+  'https://github.com/andresonrmota/developer-dashboard/releases/download/v1.1.2av/AgenteViagens-Setup-v1.1.2.exe';
 const DOWNLOAD_MACOS =
-  'https://github.com/andresonrmota/developer-dashboard/releases/download/v1.1.1av/AgenteViagens-1.1.1-macos-arm64.zip';
+  'https://github.com/andresonrmota/developer-dashboard/releases/download/v1.1.2av/AgenteViagens-1.1.2-macos-arm64.zip';
 
 /**
  * Página de download do Agente de Viagens.
