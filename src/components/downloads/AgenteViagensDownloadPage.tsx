@@ -2,8 +2,8 @@ import { Plane, Monitor, Apple, ExternalLink, HelpCircle } from 'lucide-react';
 import { DownloadLayout } from './DownloadLayout';
 import { PlatformCard } from './PlatformCard';
 
-const VERSION = '1.1.1';
-const RELEASE_URL = 'https://github.com/andresonrmota/developer-dashboard/releases/tag/v1.1.1av';
+const VERSION = '1.1.2';
+const RELEASE_URL = 'https://github.com/andresonrmota/developer-dashboard/releases/tag/v1.1.2av';
 const DOWNLOAD_WINDOWS =
   'https://github.com/andresonrmota/developer-dashboard/releases/download/v1.1.1av/AgenteViagens-Setup-v1.1.1.exe';
 const DOWNLOAD_MACOS =
