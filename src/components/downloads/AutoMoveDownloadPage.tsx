@@ -1,6 +1,7 @@
 import { Download, Monitor, Apple } from 'lucide-react';
 import { DownloadLayout } from './DownloadLayout';
 import { PlatformCard } from './PlatformCard';
+import { CommandSnippet, InstallNote, InstallNotes } from './InstallNotes';
 
 const VERSION = '1.6.0';
 
@@ -47,6 +48,37 @@ export function AutoMoveDownloadPage() {
           ]}
         />
       </div>
+
+      <InstallNotes>
+        <InstallNote title="Navegador obrigatório">
+          <p>
+            A automação usa o <strong>Google Chrome</strong> ou o <strong>Microsoft Edge</strong>. Tenha um deles
+            instalado antes de abrir o AutoMove.
+          </p>
+        </InstallNote>
+
+        <InstallNote title="Windows: aviso do SmartScreen">
+          <p>
+            Se aparecer <em>“O Windows protegeu o computador”</em>, clique em <strong>Mais informações</strong> e depois
+            em <strong>Executar assim mesmo</strong>.
+          </p>
+        </InstallNote>
+
+        <InstallNote title="macOS: “o app está danificado” ou “não pode ser aberto”">
+          <p>
+            O app ainda não é assinado pela Apple, então o macOS bloqueia a primeira abertura. Depois de arrastar o
+            AutoMove para <strong>Aplicativos</strong>, abra o Terminal e rode:
+          </p>
+          <CommandSnippet command="xattr -cr /Applications/AutoMove.app" />
+        </InstallNote>
+
+        <InstallNote title="macOS: sem usar o Terminal">
+          <p>
+            Tente abrir o app uma vez, vá em <strong>Ajustes do Sistema → Privacidade e Segurança</strong>, role até o
+            aviso sobre o AutoMove e clique em <strong>Abrir Mesmo Assim</strong>.
+          </p>
+        </InstallNote>
+      </InstallNotes>
     </DownloadLayout>
   );
 }
