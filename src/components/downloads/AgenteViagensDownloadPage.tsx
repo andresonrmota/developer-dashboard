@@ -2,15 +2,15 @@ import { Plane, Monitor, Apple, ExternalLink, HelpCircle } from 'lucide-react';
 import { DownloadLayout } from './DownloadLayout';
 import { PlatformCard } from './PlatformCard';
 
-const VERSION = '1.4.2';
-const RELEASE_URL = 'https://github.com/andresonrmota/developer-dashboard/releases/tag/v1.4.2av';
+const VERSION = '1.6.0';
+const RELEASE_URL = 'https://github.com/andresonrmota/developer-dashboard/releases/tag/v1.6.0av';
 const DOWNLOAD_WINDOWS =
-  'https://github.com/andresonrmota/developer-dashboard/releases/download/v1.4.2av/AgenteViagens-Setup-v1.4.2.exe';
+  'https://github.com/andresonrmota/developer-dashboard/releases/download/v1.6.0av/AgenteViagens-Setup-v1.6.0.exe';
 const DOWNLOAD_MACOS =
-  'https://github.com/andresonrmota/developer-dashboard/releases/download/v1.4.2av/AgenteViagens-1.4.2-macos-arm64.zip';
+  'https://github.com/andresonrmota/developer-dashboard/releases/download/v1.6.0av/AgenteViagens-1.6.0-macos-arm64.zip';
 
 /**
- * Página de download do Agente de Viagens.
+ * Página de download do Agente Conecta.
  *
  * Oferece instaladores nativos para Windows (x64) e macOS (Apple Silicon).
  */
@@ -18,7 +18,7 @@ export function AgenteViagensDownloadPage() {
   return (
     <DownloadLayout
       icon={<Plane className="w-8 h-8" />}
-      title="Download do Agente Viagens"
+      title="Download do Agente Conecta"
       description="Automação desktop assistida para envio de mensagens de aniversário e relacionamento com clientes via WhatsApp Web. Escolha a versão adequada para o seu sistema operacional."
       footerNote={`Versão oficial: v${VERSION} (Windows x64 e macOS Apple Silicon)`}
     >
