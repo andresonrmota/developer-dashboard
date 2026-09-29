@@ -2,12 +2,12 @@ import { Plane, Monitor, Apple, ExternalLink, HelpCircle } from 'lucide-react';
 import { DownloadLayout } from './DownloadLayout';
 import { PlatformCard } from './PlatformCard';
 
-const VERSION = '1.6.0';
-const RELEASE_URL = 'https://github.com/andresonrmota/developer-dashboard/releases/tag/v1.6.0.av';
+const VERSION = '1.7.0';
+const RELEASE_URL = 'https://github.com/andresonrmota/developer-dashboard/releases/tag/v1.7.0av';
 const DOWNLOAD_WINDOWS =
-  'https://github.com/andresonrmota/developer-dashboard/releases/download/v1.6.0.av/AgenteViagens-Setup-v1.6.0.exe';
+  'https://github.com/andresonrmota/developer-dashboard/releases/download/v1.7.0av/AgenteViagens-Setup-v1.7.0.exe';
 const DOWNLOAD_MACOS =
-  'https://github.com/andresonrmota/developer-dashboard/releases/download/v1.6.0.av/AgenteViagens-1.6.0-macos-arm64.zip';
+  'https://github.com/andresonrmota/developer-dashboard/releases/download/v1.7.0av/AgenteViagens-1.7.0-macos-arm64.zip';
 
 /**
  * Página de download do Agente Conecta.
