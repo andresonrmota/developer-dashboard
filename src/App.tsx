@@ -10,7 +10,7 @@ import { ProjectCard } from './components/ProjectCard'
 import { EmptyState } from './components/EmptyState'
 import { AutoMoveDownloadPage } from './components/downloads/AutoMoveDownloadPage'
 import { VideoDownloaderDownloadPage } from './components/downloads/VideoDownloaderDownloadPage'
-import { AgenteViagensDownloadPage } from './components/downloads/AgenteViagensDownloadPage'
+import { AgenteConectaDownloadPage } from './components/downloads/AgenteConectaDownloadPage'
 import { Loader2 } from 'lucide-react'
 
 // Cyclic status order for toggling
@@ -40,11 +40,8 @@ function App() {
   if (normalizedPath === '/downloads/video-downloader') {
     return <VideoDownloaderDownloadPage />
   }
-  if (
-    normalizedPath === '/downloads/agente-viagens' ||
-    normalizedPath === '/downloads/agente-de-viagens'
-  ) {
-    return <AgenteViagensDownloadPage />
+  if (normalizedPath === '/downloads/agente-conecta') {
+    return <AgenteConectaDownloadPage />
   }
 
   // Real-time synchronization (read-only for all users)

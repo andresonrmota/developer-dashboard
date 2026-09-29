@@ -14,7 +14,7 @@ const DOWNLOAD_MACOS =
  *
  * Oferece instaladores nativos para Windows (x64) e macOS (Apple Silicon).
  */
-export function AgenteViagensDownloadPage() {
+export function AgenteConectaDownloadPage() {
   return (
     <DownloadLayout
       icon={<Plane className="w-8 h-8" />}
