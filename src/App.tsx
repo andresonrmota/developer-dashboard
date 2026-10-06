@@ -40,7 +40,11 @@ function App() {
   if (normalizedPath === '/downloads/video-downloader') {
     return <VideoDownloaderDownloadPage />
   }
-  if (normalizedPath === '/downloads/agente-conecta') {
+  if (
+    normalizedPath === '/downloads/agente-conecta' ||
+    normalizedPath === '/downloads/agente-viagens' ||
+    normalizedPath === '/downloads/agente-de-viagens'
+  ) {
     return <AgenteConectaDownloadPage />
   }
 
