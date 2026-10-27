@@ -3,12 +3,11 @@ import { DownloadLayout } from './DownloadLayout';
 import { PlatformCard } from './PlatformCard';
 
 const VERSION = '1.8.0';
-const MACOS_VERSION = '1.7.2';
 const RELEASE_URL = 'https://github.com/andresonrmota/developer-dashboard/releases/tag/v1.8.0av';
 const DOWNLOAD_WINDOWS =
   'https://github.com/andresonrmota/developer-dashboard/releases/download/v1.8.0av/AgenteViagens-Setup-v1.8.0.exe';
 const DOWNLOAD_MACOS =
-  'https://github.com/andresonrmota/developer-dashboard/releases/download/v1.7.2av/AgenteViagens-1.7.2-macos-arm64.zip';
+  'https://github.com/andresonrmota/developer-dashboard/releases/download/v1.8.0av/AgenteViagens-1.8.0-macos-arm64.zip';
 
 /**
  * Página de download do Agente Conecta.
@@ -21,7 +20,7 @@ export function AgenteConectaDownloadPage() {
       icon={<Plane className="w-8 h-8" />}
       title="Download do Agente Conecta"
       description="Automação desktop assistida para envio de mensagens de aniversário e relacionamento com clientes via WhatsApp Web. Escolha a versão adequada para o seu sistema operacional."
-      footerNote={`Versão oficial: Windows x64 v${VERSION} · macOS Apple Silicon v${MACOS_VERSION}`}
+      footerNote={`Versão oficial: v${VERSION} (Windows x64 e macOS Apple Silicon)`}
     >
       <div className="grid md:grid-cols-2 gap-8">
         <PlatformCard
@@ -40,7 +39,7 @@ export function AgenteConectaDownloadPage() {
         <PlatformCard
           icon={<Apple className="w-16 h-16 text-slate-800 dark:text-slate-200" />}
           title="macOS"
-          description={`Pacote v${MACOS_VERSION} otimizado para Apple Silicon (chips M1, M2, M3 e M4).`}
+          description={`Pacote v${VERSION} otimizado para Apple Silicon (chips M1, M2, M3 e M4).`}
           links={[
             {
               label: 'Baixar para macOS (.zip)',
