@@ -39,7 +39,7 @@ export function AgenteConectaDownloadPage() {
         <PlatformCard
           icon={<Apple className="w-16 h-16 text-slate-800 dark:text-slate-200" />}
           title="macOS"
-          description={`Pacote v${VERSION} otimizado para Apple Silicon (chips M1, M2, M3 e M4).`}
+          description={`Pacote v${VERSION} otimizado para Apple Silicon (chips M1 ou mais recentes).`}
           links={[
             {
               label: 'Baixar para macOS (.zip)',
