@@ -3,7 +3,7 @@ import { DownloadLayout } from './DownloadLayout';
 import { PlatformCard } from './PlatformCard';
 import { CommandSnippet, InstallNote, InstallNotes } from './InstallNotes';
 
-const VERSION = '1.6.0';
+const VERSION = '1.8.0';
 
 /**
  * Página de download do AutoMove — mesmo conteúdo que já existia em
