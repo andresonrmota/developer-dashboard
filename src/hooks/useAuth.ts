@@ -2,8 +2,12 @@ import { useState, useEffect, useCallback } from 'react'
 import { onAuthStateChanged, signInWithPopup, signOut, type User } from 'firebase/auth'
 import { auth, googleProvider } from '../lib/firebase'
 
-// Owner UID — only this user has write permissions
-const OWNER_UID = import.meta.env.VITE_OWNER_UID ?? ''
+// UID do owner — o mesmo que está em firestore.rules, que é quem de fato
+// protege a escrita; aqui só decide o que a interface mostra. Fica fixo no
+// código porque a Vercel nunca teve VITE_OWNER_UID e isso deixava o dono
+// sem edição nem Smart Sync em produção. A variável segue valendo pra testar
+// com outra conta.
+const OWNER_UID = import.meta.env.VITE_OWNER_UID || 'O805TXABLZeD2ns3u1jwTPAj2a33'
 
 export function useAuth() {
   const [user, setUser] = useState<User | null>(null)
