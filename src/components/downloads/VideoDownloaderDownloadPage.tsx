@@ -19,7 +19,7 @@ export function VideoDownloaderDownloadPage() {
       icon={<Video className="w-8 h-8" />}
       title="Download do Video Downloader"
       description="Baixe vídeos e áudios do YouTube colando um link — sem terminal, sem instalar nada. Escolha a versão adequada para o seu sistema operacional."
-      footerNote={`Versão atual: ${VERSION} (Windows)`}
+      version={VERSION}
     >
       <div className="grid place-items-center">
         <div className="w-full max-w-sm">

@@ -15,7 +15,7 @@ export function AutoMoveDownloadPage() {
       icon={<Download className="w-8 h-8" />}
       title="Download do AutoMove"
       description="Automatize seus lançamentos da MV de forma rápida e segura. Escolha a versão adequada para o seu sistema operacional."
-      footerNote={`Versão atual: ${VERSION} Windows e ${VERSION} macOS`}
+      version={VERSION}
     >
       <div className="grid md:grid-cols-2 gap-6">
         <PlatformCard

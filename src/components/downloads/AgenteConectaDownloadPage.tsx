@@ -20,7 +20,7 @@ export function AgenteConectaDownloadPage() {
       icon={<Plane className="w-8 h-8" />}
       title="Download do Agente Conecta"
       description="Automação desktop assistida para envio de mensagens de aniversário e relacionamento com clientes via WhatsApp Web. Escolha a versão adequada para o seu sistema operacional."
-      footerNote={`Versão oficial: v${VERSION} (Windows x64 e macOS Apple Silicon)`}
+      version={VERSION}
     >
       <div className="grid md:grid-cols-2 gap-6">
         <PlatformCard
