@@ -17,9 +17,9 @@ export function AutoMoveDownloadPage() {
       description="Automatize seus lançamentos da MV de forma rápida e segura. Escolha a versão adequada para o seu sistema operacional."
       footerNote={`Versão atual: ${VERSION} Windows e ${VERSION} macOS`}
     >
-      <div className="grid md:grid-cols-2 gap-8">
+      <div className="grid md:grid-cols-2 gap-6">
         <PlatformCard
-          icon={<Monitor className="w-16 h-16 text-blue-500" />}
+          icon={<Monitor className="w-12 h-12 text-blue-500" />}
           title="Windows"
           description="Compatível com Windows 10 e Windows 11 (64-bits)."
           links={[
@@ -31,7 +31,7 @@ export function AutoMoveDownloadPage() {
         />
 
         <PlatformCard
-          icon={<Apple className="w-16 h-16 text-slate-800 dark:text-slate-200" />}
+          icon={<Apple className="w-12 h-12 text-slate-800 dark:text-slate-200" />}
           title="macOS"
           description="Compatível com macOS Monterey ou superior."
           links={[

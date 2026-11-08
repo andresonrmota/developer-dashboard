@@ -8,12 +8,12 @@ import { Check, Copy, Info } from 'lucide-react';
  */
 export function InstallNotes({ children }: { children: ReactNode }) {
   return (
-    <section className="mt-12 p-6 sm:p-8 rounded-3xl border border-amber-300/60 dark:border-amber-500/30 bg-amber-50 dark:bg-amber-500/5">
-      <h2 className="flex items-center gap-2 text-lg font-semibold mb-6 text-amber-900 dark:text-amber-200">
+    <section className="mt-8 p-5 sm:p-6 rounded-3xl border border-amber-300/60 dark:border-amber-500/30 bg-amber-50 dark:bg-amber-500/5">
+      <h2 className="flex items-center gap-2 text-lg font-semibold mb-4 text-amber-900 dark:text-amber-200">
         <Info className="w-5 h-5 shrink-0" />
         Antes de instalar
       </h2>
-      <div className="grid md:grid-cols-2 gap-8 text-sm text-slate-700 dark:text-slate-300">{children}</div>
+      <div className="grid md:grid-cols-2 gap-x-8 gap-y-5 text-sm text-slate-700 dark:text-slate-300">{children}</div>
     </section>
   );
 }

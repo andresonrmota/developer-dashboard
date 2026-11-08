@@ -24,10 +24,10 @@ const VARIANT_CLASSES: Record<'primary' | 'secondary', string> = {
 /** Um cartão de plataforma (Windows, macOS...) com um ou mais botões de download. */
 export function PlatformCard({ icon, title, description, links }: PlatformCardProps) {
   return (
-    <div className="flex flex-col items-center p-8 bg-white dark:bg-slate-900/40 rounded-3xl border border-slate-200 dark:border-slate-800/60 shadow-sm hover:shadow-md transition-shadow">
-      <div className="w-16 h-16 mb-6 flex items-center justify-center">{icon}</div>
-      <h2 className="text-2xl font-semibold mb-2">{title}</h2>
-      <p className="text-slate-500 text-center mb-8">{description}</p>
+    <div className="flex flex-col items-center p-6 bg-white dark:bg-slate-900/40 rounded-3xl border border-slate-200 dark:border-slate-800/60 shadow-sm hover:shadow-md transition-shadow">
+      <div className="w-12 h-12 mb-4 flex items-center justify-center">{icon}</div>
+      <h2 className="text-xl font-semibold mb-1">{title}</h2>
+      <p className="text-slate-500 text-sm text-center mb-5">{description}</p>
       <div className="w-full mt-auto flex flex-col gap-3">
         {links.map((link) => (
           <a
@@ -57,10 +57,10 @@ export function PendingPlatformCard({
   note?: string;
 }) {
   return (
-    <div className="flex flex-col items-center p-8 bg-white dark:bg-slate-900/40 rounded-3xl border border-slate-200 dark:border-slate-800/60 shadow-sm opacity-70">
-      <div className="w-16 h-16 mb-6 flex items-center justify-center">{icon}</div>
-      <h2 className="text-2xl font-semibold mb-2">{title}</h2>
-      <p className="text-slate-500 text-center mb-8">{description}</p>
+    <div className="flex flex-col items-center p-6 bg-white dark:bg-slate-900/40 rounded-3xl border border-slate-200 dark:border-slate-800/60 shadow-sm opacity-70">
+      <div className="w-12 h-12 mb-4 flex items-center justify-center">{icon}</div>
+      <h2 className="text-xl font-semibold mb-1">{title}</h2>
+      <p className="text-slate-500 text-sm text-center mb-5">{description}</p>
       <div
         aria-disabled="true"
         className="w-full mt-auto flex items-center justify-center gap-2 bg-slate-200 dark:bg-slate-800 text-slate-500 dark:text-slate-500 font-medium py-3 px-6 rounded-xl cursor-not-allowed select-none"

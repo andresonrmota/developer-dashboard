@@ -22,9 +22,9 @@ export function AgenteConectaDownloadPage() {
       description="Automação desktop assistida para envio de mensagens de aniversário e relacionamento com clientes via WhatsApp Web. Escolha a versão adequada para o seu sistema operacional."
       footerNote={`Versão oficial: v${VERSION} (Windows x64 e macOS Apple Silicon)`}
     >
-      <div className="grid md:grid-cols-2 gap-8">
+      <div className="grid md:grid-cols-2 gap-6">
         <PlatformCard
-          icon={<Monitor className="w-16 h-16 text-blue-500" />}
+          icon={<Monitor className="w-12 h-12 text-blue-500" />}
           title="Windows"
           description={`Instalador oficial v${VERSION}, compatível com Windows 10 e Windows 11 (64-bits).`}
           links={[
@@ -37,7 +37,7 @@ export function AgenteConectaDownloadPage() {
         />
 
         <PlatformCard
-          icon={<Apple className="w-16 h-16 text-slate-800 dark:text-slate-200" />}
+          icon={<Apple className="w-12 h-12 text-slate-800 dark:text-slate-200" />}
           title="macOS"
           description={`Pacote v${VERSION} otimizado para Apple Silicon (chips M1 ou mais recentes).`}
           links={[

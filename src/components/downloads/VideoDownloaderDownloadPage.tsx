@@ -24,7 +24,7 @@ export function VideoDownloaderDownloadPage() {
       <div className="grid place-items-center">
         <div className="w-full max-w-sm">
           <PlatformCard
-            icon={<Monitor className="w-16 h-16 text-blue-500" />}
+            icon={<Monitor className="w-12 h-12 text-blue-500" />}
             title="Windows"
             description="Compatível com Windows 10 e Windows 11 (64-bits)."
             links={[
