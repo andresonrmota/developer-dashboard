@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { ExternalLink, GitBranch, Clock, Tag, Settings } from 'lucide-react'
+import { ExternalLink, GitBranch, Clock, Tag, Settings, Folder } from 'lucide-react'
 import type { Project } from '../types'
 import { StatusBadge } from './StatusBadge'
 import { StackBadge } from './StackBadge'
@@ -88,10 +88,20 @@ export function ProjectCard({ project, isModified = false, isOwner = false, onSt
               <h3 className="text-slate-900 dark:text-slate-100 font-semibold text-base leading-snug group-hover:text-blue-600 dark:group-hover:text-blue-300 transition-colors duration-200">
                 {project.name}
               </h3>
-              {project.category && (
-                <span className="flex items-center gap-1 mt-0.5 text-slate-400 dark:text-slate-500 text-xs">
-                  <Tag size={10} />
-                  {project.category}
+              {(project.category || project.group) && (
+                <span className="flex items-center gap-2 mt-0.5 text-slate-400 dark:text-slate-500 text-xs">
+                  {project.group && (
+                    <span className="flex items-center gap-1" title="Pasta em ProjetosIA">
+                      <Folder size={10} />
+                      {project.group}
+                    </span>
+                  )}
+                  {project.category && (
+                    <span className="flex items-center gap-1">
+                      <Tag size={10} />
+                      {project.category}
+                    </span>
+                  )}
                 </span>
               )}
             </div>
@@ -153,9 +163,9 @@ export function ProjectCard({ project, isModified = false, isOwner = false, onSt
               <GitBranch size={11} className="text-blue-600 dark:text-blue-400" />
               v{project.version}
             </span>
-            <span className="flex items-center gap-1">
+            <span className="flex items-center gap-1" title={project.lastUpdated ? 'Último commit' : 'Última alteração no dashboard'}>
               <Clock size={11} />
-              {formatDate(project.updatedAt)}
+              {formatDate(project.lastUpdated ?? project.updatedAt)}
             </span>
           </div>
 

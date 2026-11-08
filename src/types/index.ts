@@ -15,6 +15,10 @@ export interface Project {
   url?: string;
   repoUrl?: string;
   category?: string;
+  /** Pasta de primeiro nível em ProjetosIA (Consultoria, Corporativo, Particular…). Vem do mapeamento. */
+  group?: string;
+  /** Data do último commit (ISO). Vem do mapeamento. */
+  lastUpdated?: string;
   owner?: string;
   hostingAccount?: string;
   firebaseLogin?: string;

@@ -1,4 +1,4 @@
-import { LayoutGrid, Zap, CheckCircle2, Code2, LogIn, LogOut, Shield, Moon, Sun } from 'lucide-react'
+import { LayoutGrid, Zap, CheckCircle2, Code2, LogIn, LogOut, Shield, Moon, Sun, FolderSync } from 'lucide-react'
 import type { Project, ProjectStatus } from '../types'
 import type { User } from 'firebase/auth'
 
@@ -70,9 +70,11 @@ interface HeaderProps {
   onLogout: () => void
   isDarkMode: boolean
   onThemeToggle: () => void
+  /** Só existe em localhost com o owner logado: abre o mapeamento da pasta de projetos. */
+  onMapear?: () => void
 }
 
-export function Header({ user, isOwner, onLogin, onLogout, isDarkMode, onThemeToggle }: HeaderProps) {
+export function Header({ user, isOwner, onLogin, onLogout, isDarkMode, onThemeToggle, onMapear }: HeaderProps) {
   const now = new Date()
   const dateStr = now.toLocaleDateString('pt-BR', {
     weekday: 'short',
@@ -118,6 +120,17 @@ export function Header({ user, isOwner, onLogin, onLogout, isDarkMode, onThemeTo
             >
               {isDarkMode ? <Sun size={15} className="text-amber-400" /> : <Moon size={15} />}
             </button>
+
+            {onMapear && (
+              <button
+                onClick={onMapear}
+                className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium text-amber-600 dark:text-amber-400 border border-amber-500/30 hover:bg-amber-500/10 active:scale-95 transition-all duration-200"
+                title="Mapear a pasta de projetos e atualizar o portfólio (só em localhost)"
+              >
+                <FolderSync size={13} />
+                <span className="hidden sm:inline">Mapear projetos</span>
+              </button>
+            )}
 
             {/* Auth section */}
             {user ? (

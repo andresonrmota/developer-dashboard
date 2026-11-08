@@ -11,10 +11,28 @@ import { EmptyState } from './components/EmptyState'
 import { AutoMoveDownloadPage } from './components/downloads/AutoMoveDownloadPage'
 import { VideoDownloaderDownloadPage } from './components/downloads/VideoDownloaderDownloadPage'
 import { AgenteConectaDownloadPage } from './components/downloads/AgenteConectaDownloadPage'
+import { MapearModal } from './components/MapearModal'
 import { Loader2 } from 'lucide-react'
+import pkg from '../package.json'
 
 // Cyclic status order for toggling
 const STATUS_CYCLE: ProjectStatus[] = ['production', 'beta', 'development']
+
+/**
+ * Campos cuja fonte de verdade é o src/data/portfolio.json (gerado por
+ * `npm run mapear`). O Smart Sync empurra qualquer diferença neles pro
+ * Firestore. Os demais (status, url, hostingAccount, modules, notes…) vivem
+ * no Firestore e são editados no próprio app — o JSON nunca os sobrescreve.
+ */
+const JSON_OWNED_FIELDS = ['name', 'description', 'version', 'stack', 'repoUrl', 'category', 'group', 'lastUpdated'] as const
+
+const localProjects = portfolioData as unknown as Project[]
+
+/** Data da última mudança: o último commit quando o mapeamento informou, senão o updatedAt do Firestore. */
+function lastChangeSeconds(p: Project): number {
+  if (p.lastUpdated) return Date.parse(p.lastUpdated) / 1000
+  return p.updatedAt?.seconds ?? 0
+}
 
 function App() {
   const { user, isOwner, login, logout, loading: authLoading } = useAuth()
@@ -31,6 +49,7 @@ function App() {
     sortOrder: 'desc',
   })
   const [lastSyncDate, setLastSyncDate] = useState<string>(new Date().toLocaleString('pt-BR').replace(', ', ' - '))
+  const [showMapear, setShowMapear] = useState(false)
 
   // Roteamento simples por pathname
   const normalizedPath = window.location.pathname.replace(/\/+$/, '')
@@ -81,22 +100,24 @@ function App() {
     }
   }, [isDarkMode])
 
-  // Sync versions and add missing projects from local JSON to Firestore (only when owner is logged in)
+  // Smart Sync: o que o JSON manda (ver JSON_OWNED_FIELDS) vai pro Firestore; projetos novos são criados (owner only)
   useEffect(() => {
     if (!isOwner || projects.length === 0) return
 
-    portfolioData.forEach(async (local) => {
+    localProjects.forEach(async (local) => {
       const remote = projects.find(p => p.id === local.id)
-      
+
       if (remote) {
-        // Update version if changed
-        if (local.version !== remote.version) {
-          console.log(`Smart Sync: Atualizando versão de ${local.name} para v${local.version}`)
+        const updates: Record<string, unknown> = {}
+        for (const field of JSON_OWNED_FIELDS) {
+          if (local[field] !== undefined && JSON.stringify(local[field]) !== JSON.stringify(remote[field])) {
+            updates[field] = local[field]
+          }
+        }
+        if (Object.keys(updates).length > 0) {
+          console.log(`Smart Sync: ${local.name} → ${Object.keys(updates).join(', ')}`)
           try {
-            await updateDoc(doc(db, 'projects', local.id), {
-              version: local.version,
-              updatedAt: serverTimestamp()
-            })
+            await updateDoc(doc(db, 'projects', local.id), { ...updates, updatedAt: serverTimestamp() })
           } catch (e) {
             console.error("Sync error (update):", e)
           }
@@ -105,7 +126,7 @@ function App() {
         // Add missing project
         console.log(`Smart Sync: Adicionando novo projeto ${local.name} ao Firestore`)
         try {
-          const { id, ...data } = local as any
+          const { id, ...data } = local
           await setDoc(doc(db, 'projects', id), {
             ...data,
             createdAt: serverTimestamp(),
@@ -125,7 +146,7 @@ function App() {
   const seedData = async () => {
     if (!isOwner) return
     console.log('Seeding initial data to Firestore...')
-    for (const project of (portfolioData as any[])) {
+    for (const project of localProjects) {
       const { id, ...data } = project
       await setDoc(doc(db, 'projects', id), {
         ...data,
@@ -180,12 +201,13 @@ function App() {
           return false
         }
 
-        // Search filter — match name, description, stack, category, owner
+        // Search filter — match name, description, stack, category, group, owner
         if (q) {
           const searchable = [
             project.name,
             project.description,
             project.category ?? '',
+            project.group ?? '',
             project.owner ?? '',
             ...project.stack,
           ]
@@ -203,10 +225,7 @@ function App() {
         if (sortField === 'name') {
           cmp = a.name.localeCompare(b.name)
         } else if (sortField === 'lastUpdated') {
-          // Use updatedAt timestamp for sorting
-          const timeA = a.updatedAt?.seconds ?? 0
-          const timeB = b.updatedAt?.seconds ?? 0
-          cmp = timeA - timeB
+          cmp = lastChangeSeconds(a) - lastChangeSeconds(b)
         } else if (sortField === 'status') {
           const order = ['production', 'beta', 'development', 'maintenance', 'archived']
           cmp = order.indexOf(a.status) - order.indexOf(b.status)
@@ -236,7 +255,10 @@ function App() {
         onLogout={logout}
         isDarkMode={isDarkMode}
         onThemeToggle={() => setIsDarkMode(!isDarkMode)}
+        onMapear={isOwner && import.meta.env.DEV ? () => setShowMapear(true) : undefined}
       />
+
+      {showMapear && <MapearModal onClose={() => setShowMapear(false)} />}
 
       <main className="flex-1 max-w-7xl mx-auto w-full px-4 sm:px-6 lg:px-8 py-8">
         {/* Controls Bar: Metrics + Search */}
@@ -317,7 +339,7 @@ function App() {
       {/* Footer */}
       <footer className="border-t border-slate-800/60 py-4 mt-8">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col md:flex-row items-center justify-between gap-4 text-xs text-slate-500 dark:text-slate-600">
-          <span className="order-2 md:order-1">Dev Portal · Real-time Dashboard</span>
+          <span className="order-2 md:order-1">Dev Portal v{pkg.version} · Real-time Dashboard</span>
           
           <div className="order-1 md:order-2 flex items-center gap-2 px-3 py-1 bg-slate-100 dark:bg-slate-800/40 rounded-full border border-slate-200 dark:border-slate-700/50">
             <span className="w-1.5 h-1.5 rounded-full bg-blue-500 animate-pulse" />
