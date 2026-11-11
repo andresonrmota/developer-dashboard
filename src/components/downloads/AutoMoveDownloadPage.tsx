@@ -3,7 +3,9 @@ import { DownloadLayout } from './DownloadLayout';
 import { PlatformCard } from './PlatformCard';
 import { CommandSnippet, InstallNote, InstallNotes } from './InstallNotes';
 
-const VERSION = '1.8.0';
+const VERSION = '1.8.1';
+// O .dmg da 1.8.1 ainda não foi gerado (precisa de um Mac); macOS segue na última versão publicada.
+const MAC_VERSION = '1.8.0';
 
 /**
  * Página de download do AutoMove — mesmo conteúdo que já existia em
@@ -37,12 +39,12 @@ export function AutoMoveDownloadPage() {
           links={[
             {
               label: 'Apple Silicon',
-              href: `https://github.com/andresonrmota/automove/releases/download/v${VERSION}/AutoMove-${VERSION}-arm64.dmg`,
+              href: `https://github.com/andresonrmota/automove/releases/download/v${MAC_VERSION}/AutoMove-${MAC_VERSION}-arm64.dmg`,
               variant: 'secondary',
             },
             {
               label: 'Processador Intel',
-              href: `https://github.com/andresonrmota/automove/releases/download/v${VERSION}/AutoMove-${VERSION}.dmg`,
+              href: `https://github.com/andresonrmota/automove/releases/download/v${MAC_VERSION}/AutoMove-${MAC_VERSION}.dmg`,
               variant: 'secondary',
             },
           ]}
