@@ -94,9 +94,14 @@ export function Header({ user, isOwner, onLogin, onLogout, isDarkMode, onThemeTo
               <h1 className="text-slate-900 dark:text-slate-100 font-semibold text-lg leading-none tracking-tight">
                 Dev Portal
               </h1>
-              <p className="text-slate-400 dark:text-slate-600 text-[11px] font-mono mt-0.5">
-                Internal Developer Dashboard
-              </p>
+              {lastGithubSync && (
+                <p
+                  className="text-slate-400 dark:text-slate-600 text-[11px] font-mono mt-0.5"
+                  title="Última integração de versão via GitHub"
+                >
+                  Último sync com o Git: {formatDateTime(lastGithubSync)}
+                </p>
+              )}
             </div>
           </div>
 
@@ -107,15 +112,6 @@ export function Header({ user, isOwner, onLogin, onLogout, isDarkMode, onThemeTo
           </div>
 
           <div className="flex items-center gap-3">
-            {lastGithubSync && (
-              <div
-                className="hidden sm:flex items-center gap-1.5 text-[11px] text-slate-400 dark:text-slate-600 font-mono"
-                title="Última integração de versão via GitHub"
-              >
-                <span className="w-1 h-1 rounded-full bg-emerald-400 animate-pulse" />
-                GitHub {formatDateTime(lastGithubSync)}
-              </div>
-            )}
 
             <button
               onClick={onThemeToggle}

@@ -16,24 +16,13 @@ interface ProjectCardProps {
 
 import { formatDateTime } from '../lib/format'
 
-function formatDate(timestamp: any): string {
-  if (!timestamp) return '...'
-  
-  // Convert Firestore Timestamp to Date if needed
-  const date = timestamp.toDate ? timestamp.toDate() : new Date(timestamp)
-  const now = new Date()
-  const diff = Math.floor((now.getTime() - date.getTime()) / 1000)
-
-  if (diff < 60) return 'agora mesmo'
-  if (diff < 3600) return `${Math.floor(diff / 60)}min atrás`
-  if (diff < 86400) return `${Math.floor(diff / 3600)}h atrás`
-  if (diff < 2592000) return `${Math.floor(diff / 86400)}d atrás`
-
-  return date.toLocaleDateString('pt-BR', {
-    day: '2-digit',
-    month: 'short',
-    year: 'numeric',
-  })
+/** Data do último commit: a do GitHub; se não houver, a do mapeamento; por último, a do Firestore. */
+function commitIso(project: Project): string | undefined {
+  if (project.lastCommitAt) return project.lastCommitAt
+  if (project.lastUpdated) return project.lastUpdated
+  const ts = project.updatedAt
+  if (ts?.toDate) return ts.toDate().toISOString()
+  return undefined
 }
 
 function hasMetadata(project: Project): boolean {
@@ -165,17 +154,10 @@ export function ProjectCard({ project, isModified = false, isOwner = false, onSt
               <GitBranch size={11} className="text-blue-600 dark:text-blue-400" />
               v{project.version}
             </span>
-            {project.lastCommitAt ? (
-              <span className="flex items-center gap-1" title="Último commit (lido do GitHub)">
-                <Clock size={11} />
-                {formatDateTime(project.lastCommitAt)}
-              </span>
-            ) : (
-              <span className="flex items-center gap-1" title={project.lastUpdated ? 'Último commit' : 'Última alteração no dashboard'}>
-                <Clock size={11} />
-                {formatDate(project.lastUpdated ?? project.updatedAt)}
-              </span>
-            )}
+            <span className="flex items-center gap-1" title={project.lastCommitAt ? 'Último commit (lido do GitHub)' : 'Último commit (mapeamento local)'}>
+              <Clock size={11} />
+              {formatDateTime(commitIso(project))}
+            </span>
           </div>
 
           <div className="flex items-center gap-2">

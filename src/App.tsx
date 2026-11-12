@@ -51,7 +51,6 @@ function App() {
     sortField: 'lastUpdated', // We'll map this to updatedAt internally
     sortOrder: 'desc',
   })
-  const [lastSyncDate, setLastSyncDate] = useState<string>(new Date().toLocaleString('pt-BR').replace(', ', ' - '))
   const [showMapear, setShowMapear] = useState(false)
 
   // Roteamento simples por pathname
@@ -202,7 +201,6 @@ function App() {
     })
     
     // Update last sync visual indicator
-    setLastSyncDate(new Date().toLocaleString('pt-BR').replace(', ', ' - '))
   }, [isOwner, projects, effectiveLocal])
 
   // Function to seed initial data from JSON to Firestore (owner only)
@@ -407,12 +405,6 @@ function App() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col md:flex-row items-center justify-between gap-4 text-xs text-slate-500 dark:text-slate-600">
           <span className="order-2 md:order-1">Dev Portal v{pkg.version} · Real-time Dashboard</span>
           
-          <div className="order-1 md:order-2 flex items-center gap-2 px-3 py-1 bg-slate-100 dark:bg-slate-800/40 rounded-full border border-slate-200 dark:border-slate-700/50">
-            <span className="w-1.5 h-1.5 rounded-full bg-blue-500 animate-pulse" />
-            <span className="font-mono text-[10px] uppercase tracking-wider">
-              Último Scan: <span className="text-slate-700 dark:text-slate-400">{lastSyncDate}</span>
-            </span>
-          </div>
 
           <span className="order-3 font-mono">
             {projects.length} projeto{projects.length !== 1 ? 's' : ''} sincronizado{projects.length !== 1 ? 's' : ''}

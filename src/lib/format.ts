@@ -1,5 +1,6 @@
 /** Data e hora no formato dd/mm/aaaa - HH:mm (separador hífen, sem vírgula). */
-export function formatDateTime(iso: string): string {
+export function formatDateTime(iso?: string): string {
+  if (!iso) return '...'
   const d = new Date(iso)
   if (isNaN(d.getTime())) return '...'
   const p = (n: number) => String(n).padStart(2, '0')
