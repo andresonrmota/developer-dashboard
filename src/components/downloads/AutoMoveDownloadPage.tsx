@@ -4,8 +4,8 @@ import { PlatformCard } from './PlatformCard';
 import { CommandSnippet, InstallNote, InstallNotes } from './InstallNotes';
 
 const VERSION = '1.8.2';
-// O .dmg da 1.8.1 ainda não foi gerado (precisa de um Mac); macOS segue na última versão publicada.
-const MAC_VERSION = '1.8.0';
+// Versão dos .dmg publicados na release; pode ficar atrás do Windows quando o build do Mac ainda não saiu.
+const MAC_VERSION = '1.8.2';
 
 /**
  * Página de download do AutoMove — mesmo conteúdo que já existia em
