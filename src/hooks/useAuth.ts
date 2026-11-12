@@ -3,6 +3,7 @@ import {
   onAuthStateChanged,
   signInWithPopup,
   linkWithPopup,
+  reauthenticateWithPopup,
   signOut,
   GithubAuthProvider,
   type User,
@@ -44,8 +45,14 @@ export function useAuth() {
    */
   const loginGithub = useCallback(async () => {
     try {
-      const result = auth.currentUser
-        ? await linkWithPopup(auth.currentUser, githubProvider)
+      const current = auth.currentUser
+      const alreadyLinked = !!current?.providerData.some((p) => p.providerId === 'github.com')
+      // Se o GitHub já está vinculado a esta conta, só reautentica para obter o token.
+      // Vincular de novo falha com credential-already-in-use.
+      const result = current
+        ? alreadyLinked
+          ? await reauthenticateWithPopup(current, githubProvider)
+          : await linkWithPopup(current, githubProvider)
         : await signInWithPopup(auth, githubProvider)
       const credential = GithubAuthProvider.credentialFromResult(result)
       if (credential?.accessToken) setGithubToken(credential.accessToken)
