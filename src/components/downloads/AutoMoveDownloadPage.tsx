@@ -3,7 +3,7 @@ import { DownloadLayout } from './DownloadLayout';
 import { PlatformCard } from './PlatformCard';
 import { CommandSnippet, InstallNote, InstallNotes } from './InstallNotes';
 
-const VERSION = '1.8.1';
+const VERSION = '1.8.2';
 // O .dmg da 1.8.1 ainda não foi gerado (precisa de um Mac); macOS segue na última versão publicada.
 const MAC_VERSION = '1.8.0';
 
