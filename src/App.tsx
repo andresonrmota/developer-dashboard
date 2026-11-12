@@ -110,7 +110,13 @@ function App() {
   }, [projects])
 
   const readGithubVersions = useCallback(async (token: string) => {
-    const info = await fetchGithubInfo(localProjects, token)
+    let info: Awaited<ReturnType<typeof fetchGithubInfo>>
+    try {
+      info = await fetchGithubInfo(localProjects, token)
+    } catch (e) {
+      console.error('GitHub: falha ao ler os repositórios', e)
+      return
+    }
     setGithubVersions(
       Object.fromEntries(Object.entries(info).flatMap(([id, i]) => (i.version ? [[id, i.version]] : []))),
     )

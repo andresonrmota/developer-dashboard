@@ -1,75 +1,105 @@
 import type { Project } from '../types'
 
 export interface GithubInfo {
-  /** Versão do package.json na branch padrão. */
+  /** Versão lida dos arquivos do repositório (mesma ordem do `npm run mapear`). */
   version?: string
   /** Data/hora (ISO) do último commit da branch padrão. */
   lastCommitAt?: string
 }
 
+/** Arquivos onde a versão pode estar, na raiz do repositório. */
+const FILES = {
+  pkg: 'package.json',
+  py: 'pyproject.toml',
+  props: 'version.properties',
+  gradle: 'build.gradle.kts',
+  gradleAndroid: 'android/build.gradle.kts',
+  godot: 'project.godot',
+} as const
+
+type Blob = { text?: string | null } | null
+type RepoNode = {
+  defaultBranchRef?: { target?: { committedDate?: string } | null } | null
+} & Partial<Record<keyof typeof FILES, Blob>>
+
 /**
- * Lê do GitHub, para cada projeto, a versão (package.json) e a data do último
- * commit da branch padrão, usando o token do login com GitHub.
- * Projetos sem package.json ficam só com a data do commit.
+ * Lê do GitHub, numa única chamada GraphQL, a versão e a data do último commit
+ * de cada projeto. Uma chamada só evita os 404 que a API REST devolvia para
+ * cada repositório sem package.json.
  *
- * Devolve { [projectId]: info } apenas para os que foram lidos com sucesso.
+ * Devolve { [projectId]: info } apenas para os repositórios encontrados.
  */
 export async function fetchGithubInfo(
   projects: Project[],
   token: string,
 ): Promise<Record<string, GithubInfo>> {
+  const repos = projects
+    .map((p) => ({ id: p.id, repo: parseRepo(p.repoUrl) }))
+    .filter((r): r is { id: string; repo: { owner: string; name: string } } => !!r.repo)
+  if (repos.length === 0) return {}
+
+  const fileFields = Object.entries(FILES)
+    .map(([alias, path]) => `${alias}: object(expression: "HEAD:${path}") { ... on Blob { text } }`)
+    .join('\n')
+  const query = `query {
+    ${repos
+      .map(
+        (r, i) => `r${i}: repository(owner: ${JSON.stringify(r.repo.owner)}, name: ${JSON.stringify(r.repo.name)}) {
+      defaultBranchRef { target { ... on Commit { committedDate } } }
+      ${fileFields}
+    }`,
+      )
+      .join('\n')}
+  }`
+
+  const res = await fetch('https://api.github.com/graphql', {
+    method: 'POST',
+    headers: { Authorization: `Bearer ${token}`, 'Content-Type': 'application/json' },
+    body: JSON.stringify({ query }),
+  })
+  if (!res.ok) throw new Error(`GitHub GraphQL: HTTP ${res.status}`)
+  const json = (await res.json()) as { data?: Record<string, RepoNode | null> }
+  const data = json.data ?? {}
+
   const result: Record<string, GithubInfo> = {}
-
-  await Promise.all(
-    projects.map(async (p) => {
-      const repo = parseRepo(p.repoUrl)
-      if (!repo) return
-      const base = `https://api.github.com/repos/${repo.owner}/${repo.name}`
-      const headers = {
-        Authorization: `Bearer ${token}`,
-        Accept: 'application/vnd.github+json',
-      }
-      const info: GithubInfo = {}
-
-      try {
-        const res = await fetch(`${base}/contents/package.json`, { headers })
-        if (res.ok) {
-          const data = (await res.json()) as { content?: string; encoding?: string }
-          if (data.content && data.encoding === 'base64') {
-            const pkg = JSON.parse(decodeBase64Utf8(data.content)) as { version?: string }
-            if (pkg.version) info.version = pkg.version
-          }
-        }
-      } catch (err) {
-        console.warn(`GitHub: não consegui ler a versão de ${p.id}`, err)
-      }
-
-      try {
-        const res = await fetch(`${base}/commits?per_page=1`, { headers })
-        if (res.ok) {
-          const commits = (await res.json()) as Array<{ commit?: { committer?: { date?: string } } }>
-          const date = commits[0]?.commit?.committer?.date
-          if (date) info.lastCommitAt = new Date(date).toISOString()
-        }
-      } catch (err) {
-        console.warn(`GitHub: não consegui ler o último commit de ${p.id}`, err)
-      }
-
-      if (info.version || info.lastCommitAt) result[p.id] = info
-    }),
-  )
-
+  repos.forEach((r, i) => {
+    const node = data[`r${i}`]
+    if (!node) {
+      console.warn(`GitHub: repositório não encontrado para ${r.id}`)
+      return
+    }
+    const info: GithubInfo = {}
+    const date = node.defaultBranchRef?.target?.committedDate
+    if (date) info.lastCommitAt = new Date(date).toISOString()
+    const version = detectVersion(node)
+    if (version) info.version = version
+    if (info.version || info.lastCommitAt) result[r.id] = info
+  })
   return result
+}
+
+/** Mesma ordem de scripts/mapear-projetos.mjs: package.json, pyproject, version.properties, gradle, godot. */
+function detectVersion(node: RepoNode): string | undefined {
+  const text = (k: keyof typeof FILES) => node[k]?.text ?? ''
+  try {
+    const pkg = text('pkg') ? (JSON.parse(text('pkg')) as { version?: string }) : null
+    if (pkg?.version) return pkg.version
+  } catch {
+    /* package.json inválido: segue para os próximos */
+  }
+  const py = text('py').match(/^\s*version\s*=\s*["']([^"']+)["']/m)
+  if (py) return py[1]
+  const props = text('props').match(/^\s*versionName\s*=\s*(.+)$/m)
+  if (props) return props[1].trim().replace(/^["']|["']$/g, '')
+  const gradle = (text('gradle') + text('gradleAndroid')).match(/versionName\s*=?\s*["']([^"']+)["']/)
+  if (gradle) return gradle[1]
+  const godot = text('godot').match(/config\/version\s*=\s*"([^"]+)"/)
+  if (godot) return godot[1]
+  return undefined
 }
 
 function parseRepo(url?: string): { owner: string; name: string } | null {
   if (!url) return null
   const m = url.match(/github\.com\/([^/]+)\/([^/#?]+?)(?:\.git)?\/?$/i)
   return m ? { owner: m[1], name: m[2] } : null
-}
-
-function decodeBase64Utf8(b64: string): string {
-  const clean = b64.replace(/\s/g, '')
-  const bytes = Uint8Array.from(atob(clean), (c) => c.charCodeAt(0))
-  return new TextDecoder().decode(bytes)
 }
