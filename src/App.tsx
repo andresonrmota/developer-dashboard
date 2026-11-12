@@ -1,8 +1,8 @@
-import { useState, useMemo, useCallback, useEffect } from 'react'
+import { useState, useMemo, useCallback, useEffect, useRef } from 'react'
 import { collection, onSnapshot, query, orderBy, doc, updateDoc, setDoc, serverTimestamp } from 'firebase/firestore'
 import { db } from './lib/firebase'
 import { useAuth } from './hooks/useAuth'
-import { fetchGithubVersions } from './lib/githubVersions'
+import { fetchGithubInfo } from './lib/githubVersions'
 import type { FilterState, Project, ProjectStatus } from './types'
 import portfolioData from './data/portfolio.json'
 import { Header, MetricsBar } from './components/Header'
@@ -103,14 +103,57 @@ function App() {
     }
   }, [isDarkMode])
 
-  // Quando o owner conecta o GitHub, lê as versões direto dos repositórios
+  // Versões do GitHub: lidas ao conectar e pelo botão "Atualizar do GitHub".
+  // Quando a versão muda, grava a nova versão e a data/hora da integração no Firestore.
+  const projectsRef = useRef<Project[]>([])
   useEffect(() => {
-    if (!isOwner || !githubToken) return
-    fetchGithubVersions(localProjects, githubToken).then((versions) => {
-      setGithubVersions(versions)
-      setLastSyncDate(new Date().toLocaleString('pt-BR').replace(', ', ' - '))
-    })
-  }, [isOwner, githubToken])
+    projectsRef.current = projects
+  }, [projects])
+
+  const readGithubVersions = useCallback(async (token: string) => {
+    const info = await fetchGithubInfo(localProjects, token)
+    setGithubVersions(
+      Object.fromEntries(Object.entries(info).flatMap(([id, i]) => (i.version ? [[id, i.version]] : []))),
+    )
+    const now = new Date().toISOString()
+    for (const [id, i] of Object.entries(info)) {
+      const current = projectsRef.current.find((p) => p.id === id)
+      const versionChanged = !!i.version && current?.version !== i.version
+      const commitChanged = !!i.lastCommitAt && current?.lastCommitAt !== i.lastCommitAt
+      // Primeira leitura de um projeto também registra a integração
+      const firstRead = !!i.version && !current?.githubSyncedAt
+      if (!versionChanged && !commitChanged && !firstRead) continue
+
+      const data: Record<string, unknown> = { updatedAt: serverTimestamp() }
+      if (i.version) data.version = i.version
+      if (i.lastCommitAt) data.lastCommitAt = i.lastCommitAt
+      if (versionChanged || firstRead) data.githubSyncedAt = now
+      try {
+        await updateDoc(doc(db, 'projects', id), data)
+      } catch (e) {
+        console.error('GitHub sync error:', e)
+      }
+    }
+  }, [])
+
+  useEffect(() => {
+    if (isOwner && githubToken) readGithubVersions(githubToken)
+  }, [isOwner, githubToken, readGithubVersions])
+
+  // Última integração via GitHub entre todos os projetos (mostrada no cabeçalho)
+  const lastGithubSync = useMemo(() => {
+    let latest: string | undefined
+    for (const p of projects) {
+      if (p.githubSyncedAt && (!latest || p.githubSyncedAt > latest)) latest = p.githubSyncedAt
+    }
+    return latest
+  }, [projects])
+
+  // Botão do cabeçalho: conecta (se preciso) ou relê as versões
+  const handleGithubClick = useCallback(() => {
+    if (githubToken) readGithubVersions(githubToken)
+    else loginGithub()
+  }, [githubToken, readGithubVersions, loginGithub])
 
   // Versão do GitHub prevalece sobre a do portfolio.json quando disponível
   const effectiveLocal = useMemo(
@@ -128,6 +171,8 @@ function App() {
       if (remote) {
         const updates: Record<string, unknown> = {}
         for (const field of JSON_OWNED_FIELDS) {
+          // Versão já integrada pelo GitHub não volta para a do portfolio.json
+          if (field === 'version' && remote.githubSyncedAt) continue
           if (local[field] !== undefined && JSON.stringify(local[field]) !== JSON.stringify(remote[field])) {
             updates[field] = local[field]
           }
@@ -271,8 +316,9 @@ function App() {
         isOwner={isOwner} 
         onLogin={login} 
         onLogout={logout}
-        onLoginGithub={loginGithub}
+        onLoginGithub={handleGithubClick}
         githubConnected={!!githubToken}
+        lastGithubSync={lastGithubSync}
         isDarkMode={isDarkMode}
         onThemeToggle={() => setIsDarkMode(!isDarkMode)}
         onMapear={isOwner && import.meta.env.DEV ? () => setShowMapear(true) : undefined}

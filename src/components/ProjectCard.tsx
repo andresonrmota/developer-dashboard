@@ -14,6 +14,8 @@ interface ProjectCardProps {
   onProjectUpdate?: (projectId: string, updates: Partial<Project>) => void
 }
 
+import { formatDateTime } from '../lib/format'
+
 function formatDate(timestamp: any): string {
   if (!timestamp) return '...'
   
@@ -163,10 +165,17 @@ export function ProjectCard({ project, isModified = false, isOwner = false, onSt
               <GitBranch size={11} className="text-blue-600 dark:text-blue-400" />
               v{project.version}
             </span>
-            <span className="flex items-center gap-1" title={project.lastUpdated ? 'Último commit' : 'Última alteração no dashboard'}>
-              <Clock size={11} />
-              {formatDate(project.lastUpdated ?? project.updatedAt)}
-            </span>
+            {project.lastCommitAt ? (
+              <span className="flex items-center gap-1" title="Último commit (lido do GitHub)">
+                <Clock size={11} />
+                {formatDateTime(project.lastCommitAt)}
+              </span>
+            ) : (
+              <span className="flex items-center gap-1" title={project.lastUpdated ? 'Último commit' : 'Última alteração no dashboard'}>
+                <Clock size={11} />
+                {formatDate(project.lastUpdated ?? project.updatedAt)}
+              </span>
+            )}
           </div>
 
           <div className="flex items-center gap-2">

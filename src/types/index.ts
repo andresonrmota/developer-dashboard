@@ -19,6 +19,10 @@ export interface Project {
   group?: string;
   /** Data do último commit (ISO). Vem do mapeamento. */
   lastUpdated?: string;
+  /** Quando a versão mudou pela última vez via GitHub (ISO). Preenchido pelo login com GitHub. */
+  githubSyncedAt?: string;
+  /** Data/hora (ISO) do último commit, lida do GitHub no login com GitHub. */
+  lastCommitAt?: string;
   owner?: string;
   hostingAccount?: string;
   firebaseLogin?: string;

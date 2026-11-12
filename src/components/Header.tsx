@@ -1,6 +1,7 @@
 import { LayoutGrid, Zap, CheckCircle2, Code2, LogIn, LogOut, Shield, Moon, Sun, FolderSync } from 'lucide-react'
 import type { Project, ProjectStatus } from '../types'
 import type { User } from 'firebase/auth'
+import { formatDateTime } from '../lib/format'
 
 interface MetricCardProps {
   label: string
@@ -75,16 +76,11 @@ interface HeaderProps {
   /** Owner: conecta o GitHub para ler as versões dos repositórios. */
   onLoginGithub?: () => void
   githubConnected?: boolean
+  /** Última vez que alguma versão mudou via GitHub (ISO). */
+  lastGithubSync?: string
 }
 
-export function Header({ user, isOwner, onLogin, onLogout, isDarkMode, onThemeToggle, onMapear, onLoginGithub, githubConnected }: HeaderProps) {
-  const now = new Date()
-  const dateStr = now.toLocaleDateString('pt-BR', {
-    weekday: 'short',
-    day: '2-digit',
-    month: 'short',
-    year: 'numeric',
-  })
+export function Header({ user, isOwner, onLogin, onLogout, isDarkMode, onThemeToggle, onMapear, onLoginGithub, githubConnected, lastGithubSync }: HeaderProps) {
 
   return (
     <header className="sticky top-0 z-20 border-b border-slate-200 dark:border-slate-800/60 bg-white/80 dark:bg-[#0a0e1a]/80 backdrop-blur-xl transition-colors duration-300">
@@ -111,10 +107,15 @@ export function Header({ user, isOwner, onLogin, onLogout, isDarkMode, onThemeTo
           </div>
 
           <div className="flex items-center gap-3">
-            <div className="hidden sm:flex items-center gap-1.5 text-[11px] text-slate-400 dark:text-slate-600 font-mono">
-              <span className="w-1 h-1 rounded-full bg-emerald-400 animate-pulse" />
-              {dateStr}
-            </div>
+            {lastGithubSync && (
+              <div
+                className="hidden sm:flex items-center gap-1.5 text-[11px] text-slate-400 dark:text-slate-600 font-mono"
+                title="Última integração de versão via GitHub"
+              >
+                <span className="w-1 h-1 rounded-full bg-emerald-400 animate-pulse" />
+                GitHub {formatDateTime(lastGithubSync)}
+              </div>
+            )}
 
             <button
               onClick={onThemeToggle}
@@ -144,14 +145,14 @@ export function Header({ user, isOwner, onLogin, onLogout, isDarkMode, onThemeTo
                     Owner
                   </span>
                 )}
-                {isOwner && onLoginGithub && !githubConnected && (
+                {isOwner && onLoginGithub && (
                   <button
                     onClick={onLoginGithub}
                     className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg text-[11px] font-medium text-slate-300 border border-slate-700/50 hover:bg-slate-800/60 active:scale-95 transition-all"
-                    title="Conectar GitHub para ler as versões dos repositórios"
+                    title={githubConnected ? 'Reler as versões do GitHub' : 'Conectar GitHub para ler as versões dos repositórios'}
                   >
                     <Code2 size={12} />
-                    <span className="hidden sm:inline">Ler versões do GitHub</span>
+                    <span className="hidden sm:inline">{githubConnected ? 'Atualizar do GitHub' : 'Ler versões do GitHub'}</span>
                   </button>
                 )}
                 <img
