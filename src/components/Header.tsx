@@ -72,9 +72,12 @@ interface HeaderProps {
   onThemeToggle: () => void
   /** Só existe em localhost com o owner logado: abre o mapeamento da pasta de projetos. */
   onMapear?: () => void
+  /** Owner: conecta o GitHub para ler as versões dos repositórios. */
+  onLoginGithub?: () => void
+  githubConnected?: boolean
 }
 
-export function Header({ user, isOwner, onLogin, onLogout, isDarkMode, onThemeToggle, onMapear }: HeaderProps) {
+export function Header({ user, isOwner, onLogin, onLogout, isDarkMode, onThemeToggle, onMapear, onLoginGithub, githubConnected }: HeaderProps) {
   const now = new Date()
   const dateStr = now.toLocaleDateString('pt-BR', {
     weekday: 'short',
@@ -140,6 +143,16 @@ export function Header({ user, isOwner, onLogin, onLogout, isDarkMode, onThemeTo
                     <Shield size={10} />
                     Owner
                   </span>
+                )}
+                {isOwner && onLoginGithub && !githubConnected && (
+                  <button
+                    onClick={onLoginGithub}
+                    className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg text-[11px] font-medium text-slate-300 border border-slate-700/50 hover:bg-slate-800/60 active:scale-95 transition-all"
+                    title="Conectar GitHub para ler as versões dos repositórios"
+                  >
+                    <Code2 size={12} />
+                    <span className="hidden sm:inline">Ler versões do GitHub</span>
+                  </button>
                 )}
                 <img
                   src={user.photoURL ?? ''}

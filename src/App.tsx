@@ -2,6 +2,7 @@ import { useState, useMemo, useCallback, useEffect } from 'react'
 import { collection, onSnapshot, query, orderBy, doc, updateDoc, setDoc, serverTimestamp } from 'firebase/firestore'
 import { db } from './lib/firebase'
 import { useAuth } from './hooks/useAuth'
+import { fetchGithubVersions } from './lib/githubVersions'
 import type { FilterState, Project, ProjectStatus } from './types'
 import portfolioData from './data/portfolio.json'
 import { Header, MetricsBar } from './components/Header'
@@ -35,7 +36,9 @@ function lastChangeSeconds(p: Project): number {
 }
 
 function App() {
-  const { user, isOwner, login, logout, loading: authLoading } = useAuth()
+  const { user, isOwner, login, loginGithub, githubToken, logout, loading: authLoading } = useAuth()
+  // Versões lidas do GitHub no login com GitHub (só owner, só em memória)
+  const [githubVersions, setGithubVersions] = useState<Record<string, string>>({})
   const [projects, setProjects] = useState<Project[]>([])
   const [loading, setLoading] = useState(true)
   const [isDarkMode, setIsDarkMode] = useState(() => {
@@ -100,11 +103,26 @@ function App() {
     }
   }, [isDarkMode])
 
+  // Quando o owner conecta o GitHub, lê as versões direto dos repositórios
+  useEffect(() => {
+    if (!isOwner || !githubToken) return
+    fetchGithubVersions(localProjects, githubToken).then((versions) => {
+      setGithubVersions(versions)
+      setLastSyncDate(new Date().toLocaleString('pt-BR').replace(', ', ' - '))
+    })
+  }, [isOwner, githubToken])
+
+  // Versão do GitHub prevalece sobre a do portfolio.json quando disponível
+  const effectiveLocal = useMemo(
+    () => localProjects.map((p) => (githubVersions[p.id] ? { ...p, version: githubVersions[p.id] } : p)),
+    [githubVersions],
+  )
+
   // Smart Sync: o que o JSON manda (ver JSON_OWNED_FIELDS) vai pro Firestore; projetos novos são criados (owner only)
   useEffect(() => {
     if (!isOwner || projects.length === 0) return
 
-    localProjects.forEach(async (local) => {
+    effectiveLocal.forEach(async (local) => {
       const remote = projects.find(p => p.id === local.id)
 
       if (remote) {
@@ -140,7 +158,7 @@ function App() {
     
     // Update last sync visual indicator
     setLastSyncDate(new Date().toLocaleString('pt-BR').replace(', ', ' - '))
-  }, [isOwner, projects])
+  }, [isOwner, projects, effectiveLocal])
 
   // Function to seed initial data from JSON to Firestore (owner only)
   const seedData = async () => {
@@ -253,6 +271,8 @@ function App() {
         isOwner={isOwner} 
         onLogin={login} 
         onLogout={logout}
+        onLoginGithub={loginGithub}
+        githubConnected={!!githubToken}
         isDarkMode={isDarkMode}
         onThemeToggle={() => setIsDarkMode(!isDarkMode)}
         onMapear={isOwner && import.meta.env.DEV ? () => setShowMapear(true) : undefined}
