@@ -170,8 +170,9 @@ function App() {
       if (remote) {
         const updates: Record<string, unknown> = {}
         for (const field of JSON_OWNED_FIELDS) {
-          // Versão já integrada pelo GitHub não volta para a do portfolio.json
-          if (field === 'version' && remote.githubSyncedAt) continue
+          // A versão agora vem do GitHub (botão "Atualizar do GitHub"). Não reescrever a
+          // do portfolio.json a cada carregamento: isso gastava a cota diária do Firestore.
+          if (field === 'version') continue
           if (local[field] !== undefined && JSON.stringify(local[field]) !== JSON.stringify(remote[field])) {
             updates[field] = local[field]
           }
