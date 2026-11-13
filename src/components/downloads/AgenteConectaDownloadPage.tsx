@@ -2,12 +2,12 @@ import { Plane, Monitor, Apple, ExternalLink, HelpCircle } from 'lucide-react';
 import { DownloadLayout } from './DownloadLayout';
 import { PlatformCard } from './PlatformCard';
 
-const VERSION = '1.9.3';
-const RELEASE_URL = 'https://github.com/andresonrmota/developer-dashboard/releases/tag/v1.9.3av';
+const VERSION = '1.9.7';
+const RELEASE_URL = 'https://github.com/andresonrmota/developer-dashboard/releases/tag/v1.9.7av';
 const DOWNLOAD_WINDOWS =
-  'https://github.com/andresonrmota/developer-dashboard/releases/download/v1.9.3av/AgenteViagens-Setup-v1.9.3.exe';
+  'https://github.com/andresonrmota/developer-dashboard/releases/download/v1.9.7av/AgenteConecta-Setup-v1.9.7.exe';
 const DOWNLOAD_MACOS =
-  'https://github.com/andresonrmota/developer-dashboard/releases/download/v1.9.3av/AgenteViagens-1.9.3-macos-arm64.zip';
+  'https://github.com/andresonrmota/developer-dashboard/releases/download/v1.9.7av/AgenteConecta-1.9.7-macos-arm64.zip';
 
 /**
  * Página de download do Agente Conecta.

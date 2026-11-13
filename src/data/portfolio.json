@@ -27,7 +27,7 @@
     "name": "Agente Conecta",
     "description": "App desktop para automação assistida de envio de mensagens de aniversário e relacionamento com clientes via WhatsApp Web.",
     "status": "production",
-    "version": "1.9.3",
+    "version": "1.9.7",
     "stack": [
       "Python",
       "PySide6 (Qt)",
@@ -36,7 +36,7 @@
       "Inno Setup"
     ],
     "url": "/downloads/agente-conecta",
-    "repoUrl": "https://github.com/andresonrmota/Agente-Viagens",
+    "repoUrl": "https://github.com/andresonrmota/Agente-Conecta",
     "lastUpdated": "2026-11-08T07:13:20-03:00",
     "category": "Desktop App",
     "hostingAccount": "",
