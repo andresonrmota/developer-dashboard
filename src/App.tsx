@@ -62,10 +62,14 @@ function App() {
     return <VideoDownloaderDownloadPage />
   }
   if (
-    normalizedPath === '/downloads/agente-conecta' ||
     normalizedPath === '/downloads/agente-viagens' ||
     normalizedPath === '/downloads/agente-de-viagens'
   ) {
+    // Link antigo: mantém o acesso mandando para a URL atual do Agente Conecta
+    window.location.replace('/downloads/agente-conecta')
+    return null
+  }
+  if (normalizedPath === '/downloads/agente-conecta') {
     return <AgenteConectaDownloadPage />
   }
 
